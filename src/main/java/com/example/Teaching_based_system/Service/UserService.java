@@ -5,6 +5,9 @@ import com.example.Teaching_based_system.Auth.AuthRequest;
 import com.example.Teaching_based_system.Auth.AuthResponse;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
 import com.example.Teaching_based_system.Entity.User;
+import com.example.Teaching_based_system.Exception.IdInvalidException;
+import com.example.Teaching_based_system.Exception.PasswordInvalidException;
+import com.example.Teaching_based_system.Exception.PhoneInvalidException;
 import com.example.Teaching_based_system.JWT.JwtTokenUtil;
 import com.example.Teaching_based_system.Repository.UserRepo;
 import com.example.Teaching_based_system.UserDTO.ResponseDTO;
@@ -25,6 +28,9 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Service
 public class UserService {
     @Autowired
@@ -72,19 +78,19 @@ public class UserService {
         }
         return null;
     }
-    public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO){
-        if (userRepo.existsById(userDTO.getId())){
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-        }else {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
-            userDTO.setPassword(encodedPassword);
-            userRepo.save(modelMapper.map(userDTO, User.class));
-            String token = jwtTokenUtil.generateToken(userDTO.getName(),userDTO.getRole());
-            AuthResponse authResponse = new AuthResponse(userDTO.getName(),token);
-            return ResponseEntity.ok(authResponse);
-        }
-    }
+//    public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO){
+//        if (userRepo.existsById(userDTO.getId())){
+//            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+//        }else {
+//            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//            String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+//            userDTO.setPassword(encodedPassword);
+//            userRepo.save(modelMapper.map(userDTO, User.class));
+//            String token = jwtTokenUtil.generateToken(userDTO.getName(),userDTO.getRole());
+//            AuthResponse authResponse = new AuthResponse(userDTO.getName(),token);
+//            return ResponseEntity.ok(authResponse);
+//        }
+//    }
 
     public UserDTO getDetails(String name){
         User user = userRepo.findByName(name);
@@ -106,6 +112,58 @@ public class UserService {
         catch (HttpServerErrorException.InternalServerError ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+
+    }
+    public static boolean isValidPassword(String password) {
+        String regex = "^(?=.*[0-9])"
+                + "(?=.*[a-z])(?=.*[A-Z])"
+                + "(?=.*[@#$%^&+=])"
+                + "(?=\\S+$).{8,20}$";
+        Pattern p = Pattern.compile(regex);
+        if (password == null) {
+            return false;
+        }
+        Matcher m = p.matcher(password);
+        return m.matches();
+    }
+    public static boolean isValidPhoneNumber(String password) {
+        int len = password.length();
+        return (len == 10 && onlyDigits(password,len));
+    }
+    public static boolean isValidId(String id) {
+        int len = id.length();
+        return (len == 12 && onlyDigits(id,len));
+    }
+    public static boolean onlyDigits(String str, int n)
+    {
+        for (int i = 0; i < n; i++) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO){
+        if(!isValidPassword(userDTO.getPassword())){
+            throw new PasswordInvalidException();
+        }
+        else if(!isValidPhoneNumber(userDTO.getPhoneNumber())){
+            throw new PhoneInvalidException();
+        }
+        else if (!isValidId(userDTO.getIdNumber())){
+            throw new IdInvalidException();
+
+        }
+        else{
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+            userDTO.setPassword(encodedPassword);
+            userRepo.save(modelMapper.map(userDTO, User.class));
+            String token = jwtTokenUtil.generateToken(userDTO.getName(),userDTO.getRole());
+            AuthResponse authResponse = new AuthResponse(userDTO.getName(),token);
+            return ResponseEntity.ok(authResponse);
+        }
+
 
     }
 
