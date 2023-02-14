@@ -126,9 +126,9 @@ public class UserService {
         Matcher m = p.matcher(password);
         return m.matches();
     }
-    public static boolean isValidPhoneNumber(String password) {
-        int len = password.length();
-        return (len == 10 && onlyDigits(password,len));
+    public static boolean isValidPhoneNumber(String phonenumber) {
+        int len = phonenumber.length();
+        return (len == 10 && onlyDigits(phonenumber,len) && phonenumber.charAt(0) == '0');
     }
     public static boolean isValidId(String id) {
         int len = id.length();
