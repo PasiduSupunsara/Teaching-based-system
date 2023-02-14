@@ -20,8 +20,8 @@ public class HomeController {
         return userDTOList;
     }
     @GetMapping("/getUser")
-    public UserDTO getUser(int id){
-        return userService.getUser(id);
+    public UserDTO getUser(String name){
+        return userService.getDetails(name);
     }
 
 }

@@ -2,6 +2,8 @@ package com.example.Teaching_based_system.Controller;
 
 import com.example.Teaching_based_system.Auth.AuthRequest;
 import com.example.Teaching_based_system.Auth.AuthResponse;
+import com.example.Teaching_based_system.Auth.DeleteRequest;
+import com.example.Teaching_based_system.Auth.UpdateRequest;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
 import com.example.Teaching_based_system.Entity.User;
 import com.example.Teaching_based_system.JWT.JwtTokenUtil;
@@ -42,14 +44,17 @@ public class AuthController {
 
     }
     @DeleteMapping("/delete")
-    public ResponseEntity delete(@RequestBody UserDTO userDTO){
-        return userService.deleteUser(userDTO);
+    public ResponseEntity delete(@RequestBody DeleteRequest deleteRequest){
+        return userService.deleteUser(deleteRequest);
 
     }
     @PutMapping("/update")
-    public ResponseEntity update(@RequestBody UserDTO userDTO){
-        return userService.updateUser(userDTO);
+    public ResponseEntity update(@RequestBody UpdateRequest updateRequest){
+        return userService.updateUser(updateRequest);
     }
-
+//    @GetMapping("/getUser")
+//    public  ResponseEntity getUser(String name){
+//        return userService.getDetails(name);
+//    }
 
 }

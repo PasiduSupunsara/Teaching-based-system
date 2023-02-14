@@ -3,6 +3,8 @@ package com.example.Teaching_based_system.Service;
 
 import com.example.Teaching_based_system.Auth.AuthRequest;
 import com.example.Teaching_based_system.Auth.AuthResponse;
+import com.example.Teaching_based_system.Auth.DeleteRequest;
+import com.example.Teaching_based_system.Auth.UpdateRequest;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
 import com.example.Teaching_based_system.Entity.User;
 import com.example.Teaching_based_system.Exception.IdInvalidException;
@@ -43,10 +45,12 @@ public class UserService {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    public ResponseEntity<?> deleteUser(@RequestBody UserDTO userDTO){
-        if (userRepo.existsById(userDTO.getId())){
-            userRepo.delete(modelMapper.map(userDTO, User.class));
-            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    public ResponseEntity<?> deleteUser(@RequestBody DeleteRequest deleteRequest){
+        User user = userRepo.findByName(deleteRequest.getName());
+        UserDTO userDTO1 = modelMapper.map(user, UserDTO.class);
+        if (userRepo.existsById(userDTO1.getId())){
+            userRepo.delete(modelMapper.map(userDTO1, User.class));
+            return  ResponseEntity.ok("ok");
 
         }else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
@@ -58,14 +62,14 @@ public class UserService {
         }.getType());
     }
 
-
-    public ResponseEntity<?> updateUser(@RequestBody UserDTO userDTO){
-        if (userRepo.existsById(userDTO.getId())){
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
-            userDTO.setPassword(encodedPassword);
-            userRepo.save(modelMapper.map(userDTO, User.class));
-            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    public ResponseEntity<?> updateUser(@RequestBody UpdateRequest updateRequest){
+        User user = userRepo.findByName(updateRequest.getName());
+        User user1 = modelMapper.map(user, User.class);
+        System.out.println(user1.getPassword());
+        if (userRepo.existsById(user1.getId())){
+            user1.setRole(updateRequest.getNewRole());
+            userRepo.save(modelMapper.map(user1, User.class));
+            return ResponseEntity.ok("ok");
 
         }else {
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
@@ -78,19 +82,6 @@ public class UserService {
         }
         return null;
     }
-//    public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO){
-//        if (userRepo.existsById(userDTO.getId())){
-//            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-//        }else {
-//            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//            String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
-//            userDTO.setPassword(encodedPassword);
-//            userRepo.save(modelMapper.map(userDTO, User.class));
-//            String token = jwtTokenUtil.generateToken(userDTO.getName(),userDTO.getRole());
-//            AuthResponse authResponse = new AuthResponse(userDTO.getName(),token);
-//            return ResponseEntity.ok(authResponse);
-//        }
-//    }
 
     public UserDTO getDetails(String name){
         User user = userRepo.findByName(name);
