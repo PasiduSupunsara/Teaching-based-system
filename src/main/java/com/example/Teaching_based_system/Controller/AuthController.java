@@ -1,25 +1,16 @@
 package com.example.Teaching_based_system.Controller;
 
-import com.example.Teaching_based_system.Auth.AuthRequest;
-import com.example.Teaching_based_system.Auth.AuthResponse;
-import com.example.Teaching_based_system.Auth.DeleteRequest;
-import com.example.Teaching_based_system.Auth.UpdateRequest;
-import com.example.Teaching_based_system.Configuration.UserPrincipal;
-import com.example.Teaching_based_system.Entity.User;
+import com.example.Teaching_based_system.RequestDTO.LoginDTO;
+import com.example.Teaching_based_system.RequestDTO.InputNameDTO;
+import com.example.Teaching_based_system.RequestDTO.UpdateDTO;
 import com.example.Teaching_based_system.JWT.JwtTokenUtil;
 import com.example.Teaching_based_system.Service.UserService;
-import com.example.Teaching_based_system.UserDTO.UserDTO;
+import com.example.Teaching_based_system.RequestDTO.RegisterDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
-
 
 
 @RestController
@@ -35,26 +26,21 @@ public class AuthController {
     @Autowired
     private UserService userService;
     @PostMapping("/signup")
-    public ResponseEntity signup(@RequestBody UserDTO userDTO){
-        return userService.saveUser(userDTO);
+    public ResponseEntity signup(@RequestBody RegisterDTO registerDTO){
+        return userService.saveUser(registerDTO);
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequest authRequest){
-        return userService.login(authRequest);
-
+    public ResponseEntity login(@RequestBody LoginDTO loginDTO){
+        return userService.login(loginDTO);
     }
     @DeleteMapping("/delete")
-    public ResponseEntity delete(@RequestBody DeleteRequest deleteRequest){
-        return userService.deleteUser(deleteRequest);
+    public ResponseEntity delete(@RequestBody InputNameDTO inputNameDTO){
+        return userService.deleteUser(inputNameDTO);
 
     }
     @PutMapping("/update")
-    public ResponseEntity update(@RequestBody UpdateRequest updateRequest){
-        return userService.updateUser(updateRequest);
+    public ResponseEntity update(@RequestBody UpdateDTO updateDTO){
+        return userService.updateUser(updateDTO);
     }
-//    @GetMapping("/getUser")
-//    public  ResponseEntity getUser(String name){
-//        return userService.getDetails(name);
-//    }
 
 }

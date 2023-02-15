@@ -1,13 +1,13 @@
-package com.example.Teaching_based_system.Auth;
+package com.example.Teaching_based_system.RequestDTO;
 
-public class DeleteRequest {
+public class InputNameDTO {
     private String name;
 
-    public DeleteRequest(String name) {
+    public InputNameDTO(String name) {
         this.name = name;
     }
 
-    public DeleteRequest() {
+    public InputNameDTO() {
     }
 
     public String getName() {

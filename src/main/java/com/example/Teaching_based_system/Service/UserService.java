@@ -1,10 +1,10 @@
 package com.example.Teaching_based_system.Service;
 
-
-import com.example.Teaching_based_system.Auth.AuthRequest;
-import com.example.Teaching_based_system.Auth.AuthResponse;
-import com.example.Teaching_based_system.Auth.DeleteRequest;
-import com.example.Teaching_based_system.Auth.UpdateRequest;
+import com.example.Teaching_based_system.RequestDTO.LoginDTO;
+import com.example.Teaching_based_system.Response.DetailDTO;
+import com.example.Teaching_based_system.Response.ResponseDTO;
+import com.example.Teaching_based_system.RequestDTO.InputNameDTO;
+import com.example.Teaching_based_system.RequestDTO.UpdateDTO;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
 import com.example.Teaching_based_system.Entity.User;
 import com.example.Teaching_based_system.Exception.IdInvalidException;
@@ -12,8 +12,9 @@ import com.example.Teaching_based_system.Exception.PasswordInvalidException;
 import com.example.Teaching_based_system.Exception.PhoneInvalidException;
 import com.example.Teaching_based_system.JWT.JwtTokenUtil;
 import com.example.Teaching_based_system.Repository.UserRepo;
-import com.example.Teaching_based_system.UserDTO.ResponseDTO;
-import com.example.Teaching_based_system.UserDTO.UserDTO;
+import com.example.Teaching_based_system.Response.DetailsDTO;
+import com.example.Teaching_based_system.RequestDTO.RegisterDTO;
+import com.example.Teaching_based_system.Response.ViewDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.HttpServerErrorException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -45,57 +45,85 @@ public class UserService {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    public ResponseEntity<?> deleteUser(@RequestBody DeleteRequest deleteRequest){
-        User user = userRepo.findByName(deleteRequest.getName());
-        UserDTO userDTO1 = modelMapper.map(user, UserDTO.class);
-        if (userRepo.existsById(userDTO1.getId())){
-            userRepo.delete(modelMapper.map(userDTO1, User.class));
-            return  ResponseEntity.ok("ok");
+    public ResponseEntity deleteUser(@RequestBody InputNameDTO inputNameDTO){
+        User user = userRepo.findByName(inputNameDTO.getName());
+        RegisterDTO registerDTO1 = modelMapper.map(user, RegisterDTO.class);
+        String token = jwtTokenUtil.generateToken(inputNameDTO.getName(),getDetail(inputNameDTO.getName()).getRole());
+        if (userRepo.existsById(registerDTO1.getId())){
+            userRepo.delete(modelMapper.map(registerDTO1, User.class));
+            ResponseDTO responseDTO = new ResponseDTO(token,null,null);
+            return ResponseEntity.ok(responseDTO);
 
         }else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+            ResponseDTO responseDTO = new ResponseDTO(token,"error",null);
+            return ResponseEntity.ok(responseDTO);
         }
     }
-    public List<ResponseDTO> getAllUsers(){
+//    public List<ViewDTO> getAllUsers(){
+//        List<User> userList = userRepo.findAll();
+//        return modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
+//        }.getType());
+//    }
+//    public ResponseEntity getAllUsers(){
+//        List<User> userList = userRepo.findAll();
+//        String token = jwtTokenUtil.generateToken("pasidu","ADMIN");
+//        DetailsDTO detailsDTO = new DetailsDTO(token,null,null,modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
+//        }.getType()));
+//        return ResponseEntity.ok(detailsDTO);
+//    }
+
+    public List<ViewDTO> getAllUsers(){
         List<User> userList = userRepo.findAll();
-        return modelMapper.map(userList,new TypeToken<ArrayList<ResponseDTO>>(){
+        return modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
         }.getType());
     }
 
-    public ResponseEntity<?> updateUser(@RequestBody UpdateRequest updateRequest){
-        User user = userRepo.findByName(updateRequest.getName());
+
+    public ResponseEntity updateUser(@RequestBody UpdateDTO updateDTO){
+        User user = userRepo.findByName(updateDTO.getName());
         User user1 = modelMapper.map(user, User.class);
-        System.out.println(user1.getPassword());
+        String token = jwtTokenUtil.generateToken(updateDTO.getName(),getDetail(updateDTO.getName()).getRole());
         if (userRepo.existsById(user1.getId())){
-            user1.setRole(updateRequest.getNewRole());
+            user1.setRole(updateDTO.getNewRole());
             userRepo.save(modelMapper.map(user1, User.class));
-            return ResponseEntity.ok("ok");
+            ResponseDTO responseDTO = new ResponseDTO(token,null,null);
+            return ResponseEntity.ok(responseDTO);
 
         }else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+            ResponseDTO responseDTO = new ResponseDTO(token,"error",null);
+            return ResponseEntity.ok(responseDTO);
         }
     }
 
-    public UserDTO getUser(int id){
+    public RegisterDTO getUser(int id){
         if(userRepo.existsById(id)){
-            return modelMapper.map(userRepo.getReferenceById(id),UserDTO.class);
+            return modelMapper.map(userRepo.getReferenceById(id), RegisterDTO.class);
         }
         return null;
     }
 
-    public UserDTO getDetails(String name){
+    public RegisterDTO getDetail(String name){
         User user = userRepo.findByName(name);
-        return modelMapper.map(user,UserDTO.class);
+        return modelMapper.map(user, RegisterDTO.class);
     }
-    public ResponseEntity<?> login(@RequestBody AuthRequest authRequest){
+    public ResponseEntity getDetails(InputNameDTO inputNameDTO){
+        User user = userRepo.findByName(inputNameDTO.getName());
+
+        String token = jwtTokenUtil.generateToken(inputNameDTO.getName(),getDetail(inputNameDTO.getName()).getRole());
+        DetailDTO detailDTO = new DetailDTO(token,null,null,modelMapper.map(user, ViewDTO.class));
+        return ResponseEntity.ok(detailDTO);
+
+    }
+
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
         try{
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getName(),authRequest.getPassword())
+                    new UsernamePasswordAuthenticationToken(loginDTO.getName(), loginDTO.getPassword())
             );
             UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
-            String token = jwtTokenUtil.generateToken(authRequest.getName(),getDetails(authRequest.getName()).getRole());
-            AuthResponse authResponse = new AuthResponse(user.getUsername(),token);
-            return ResponseEntity.ok(authResponse);
+            String token = jwtTokenUtil.generateToken(loginDTO.getName(),getDetail(loginDTO.getName()).getRole());
+            ResponseDTO responseDTO = new ResponseDTO(token,null,null);
+            return ResponseEntity.ok(responseDTO);
         }
         catch (BadCredentialsException ex){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -134,25 +162,25 @@ public class UserService {
         }
         return true;
     }
-    public ResponseEntity<?> saveUser(@RequestBody UserDTO userDTO){
-        if(!isValidPassword(userDTO.getPassword())){
+    public ResponseEntity<?> saveUser(RegisterDTO registerDTO){
+        if(!isValidPassword(registerDTO.getPassword())){
             throw new PasswordInvalidException();
         }
-        else if(!isValidPhoneNumber(userDTO.getPhoneNumber())){
+        else if(!isValidPhoneNumber(registerDTO.getPhoneNumber())){
             throw new PhoneInvalidException();
         }
-        else if (!isValidId(userDTO.getIdNumber())){
+        else if (!isValidId(registerDTO.getIdNumber())){
             throw new IdInvalidException();
 
         }
         else{
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
-            userDTO.setPassword(encodedPassword);
-            userRepo.save(modelMapper.map(userDTO, User.class));
-            String token = jwtTokenUtil.generateToken(userDTO.getName(),userDTO.getRole());
-            AuthResponse authResponse = new AuthResponse(userDTO.getName(),token);
-            return ResponseEntity.ok(authResponse);
+            String encodedPassword = passwordEncoder.encode(registerDTO.getPassword());
+            registerDTO.setPassword(encodedPassword);
+            userRepo.save(modelMapper.map(registerDTO, User.class));
+            String token = jwtTokenUtil.generateToken(registerDTO.getName(), registerDTO.getRole());
+            ResponseDTO responseDTO = new ResponseDTO(token,null,null);
+            return ResponseEntity.ok(responseDTO);
         }
 
 

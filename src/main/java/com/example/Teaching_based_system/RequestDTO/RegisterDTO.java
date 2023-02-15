@@ -1,12 +1,6 @@
-package com.example.Teaching_based_system.UserDTO;
+package com.example.Teaching_based_system.RequestDTO;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.time.LocalDate;
-
-public class UserDTO {
+public class RegisterDTO {
     private int id = 0;
     private String name;
     private String password;
@@ -107,10 +101,10 @@ public class UserDTO {
         this.idNumber = idNumber;
     }
 
-    public UserDTO() {
+    public RegisterDTO() {
     }
 
-    public UserDTO(int id, String name, String password, String firstName, String lastName, String role, String idNumber, String email, String address, String phoneNumber, String dateOfBirth) {
+    public RegisterDTO(int id, String name, String password, String firstName, String lastName, String role, String idNumber, String email, String address, String phoneNumber, String dateOfBirth) {
         this.id = id;
         this.name = name;
         this.password = password;

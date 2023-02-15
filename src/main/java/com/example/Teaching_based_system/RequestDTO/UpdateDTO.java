@@ -1,13 +1,13 @@
-package com.example.Teaching_based_system.Auth;
+package com.example.Teaching_based_system.RequestDTO;
 
-public class UpdateRequest {
+public class UpdateDTO {
     public String name;
     public String newRole;
 
-    public UpdateRequest() {
+    public UpdateDTO() {
     }
 
-    public UpdateRequest(String name, String newRole) {
+    public UpdateDTO(String name, String newRole) {
         this.name = name;
         this.newRole = newRole;
     }
