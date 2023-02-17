@@ -50,6 +50,9 @@ public class JwtTokenUtil {
 
     public Boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
+        System.out.println("username:" + username);
+        System.out.println("userdetailsname:" + userDetails.getUsername());
+        System.out.println(username.equals(userDetails.getUsername()) && !isTokenExpired(token));
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);

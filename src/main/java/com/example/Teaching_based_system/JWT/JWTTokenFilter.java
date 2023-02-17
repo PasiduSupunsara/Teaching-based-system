@@ -45,7 +45,7 @@ public class JWTTokenFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
             final String authHeader = request.getHeader("Authorization");
-            final String userEmail;
+            final String name;
             final String jwtToken;
 
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -54,21 +54,19 @@ public class JWTTokenFilter extends OncePerRequestFilter {
             }
 
             jwtToken = authHeader.split(" ")[1].trim();
-            userEmail = jwtTokenUtil.extractUsername(jwtToken);
+            name = jwtTokenUtil.extractUsername(jwtToken).split(",")[0];
 
-            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-                if (jwtTokenUtil.isTokenValid(jwtToken, userDetails)) {
+            if (name != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(name);
+                if (!jwtTokenUtil.isTokenValid(jwtToken, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,
                             userDetails.getAuthorities()
                     );
-                    //set extra details
                     authToken.setDetails(
                             new WebAuthenticationDetailsSource().buildDetails(request)
                     );
-                    //update security context holder
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }

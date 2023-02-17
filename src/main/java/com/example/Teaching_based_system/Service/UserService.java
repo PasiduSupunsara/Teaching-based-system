@@ -1,6 +1,8 @@
 package com.example.Teaching_based_system.Service;
 
+import com.example.Teaching_based_system.RequestDTO.InputNameDTO;
 import com.example.Teaching_based_system.RequestDTO.LoginDTO;
+import com.example.Teaching_based_system.RequestDTO.UpdateDTO;
 import com.example.Teaching_based_system.Response.ResponseDTO;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
 import com.example.Teaching_based_system.Entity.User;
@@ -65,6 +67,37 @@ public class UserService {
             ResponseDTO responseDTO = new ResponseDTO(token,null,null);
             return ResponseEntity.ok(responseDTO);
 
+    }
+    public ResponseEntity deleteUser(@RequestBody InputNameDTO inputNameDTO){
+        User user = userRepo.findByName(inputNameDTO.getName());
+        RegisterDTO registerDTO1 = modelMapper.map(user, RegisterDTO.class);
+        String token = jwtTokenUtil.generateToken(inputNameDTO.getName(),getDetail(inputNameDTO.getName()).getRole());
+        if (userRepo.existsById(registerDTO1.getId())){
+            System.out.println("hello");
+            userRepo.delete(modelMapper.map(registerDTO1, User.class));
+            ResponseDTO responseDTO = new ResponseDTO(token,null,null);
+            return ResponseEntity.ok(responseDTO);
+
+        }else {
+            ResponseDTO responseDTO = new ResponseDTO(token,"error",null);
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+    }
+
+    public ResponseEntity updateUser(@RequestBody UpdateDTO updateDTO){
+        User user = userRepo.findByName(updateDTO.getName());
+        User user1 = modelMapper.map(user, User.class);
+        String token = jwtTokenUtil.generateToken(updateDTO.getName(),getDetail(updateDTO.getName()).getRole());
+        if (userRepo.existsById(user1.getId())){
+            user1.setRole(updateDTO.getNewRole());
+            userRepo.save(modelMapper.map(user1, User.class));
+            ResponseDTO responseDTO = new ResponseDTO(token,null,null);
+            return ResponseEntity.ok(responseDTO);
+
+        }else {
+            ResponseDTO responseDTO = new ResponseDTO(token,"error",null);
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
     }
 
 }
