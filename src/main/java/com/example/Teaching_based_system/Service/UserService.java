@@ -1,22 +1,13 @@
 package com.example.Teaching_based_system.Service;
 
 import com.example.Teaching_based_system.RequestDTO.LoginDTO;
-import com.example.Teaching_based_system.Response.DetailDTO;
 import com.example.Teaching_based_system.Response.ResponseDTO;
-import com.example.Teaching_based_system.RequestDTO.InputNameDTO;
-import com.example.Teaching_based_system.RequestDTO.UpdateDTO;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
 import com.example.Teaching_based_system.Entity.User;
-import com.example.Teaching_based_system.Exception.IdInvalidException;
-import com.example.Teaching_based_system.Exception.PasswordInvalidException;
-import com.example.Teaching_based_system.Exception.PhoneInvalidException;
 import com.example.Teaching_based_system.JWT.JwtTokenUtil;
 import com.example.Teaching_based_system.Repository.UserRepo;
-import com.example.Teaching_based_system.Response.DetailsDTO;
 import com.example.Teaching_based_system.RequestDTO.RegisterDTO;
-import com.example.Teaching_based_system.Response.ViewDTO;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.HttpServerErrorException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class UserService {
@@ -45,75 +32,11 @@ public class UserService {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    public ResponseEntity deleteUser(@RequestBody InputNameDTO inputNameDTO){
-        User user = userRepo.findByName(inputNameDTO.getName());
-        RegisterDTO registerDTO1 = modelMapper.map(user, RegisterDTO.class);
-        String token = jwtTokenUtil.generateToken(inputNameDTO.getName(),getDetail(inputNameDTO.getName()).getRole());
-        if (userRepo.existsById(registerDTO1.getId())){
-            userRepo.delete(modelMapper.map(registerDTO1, User.class));
-            ResponseDTO responseDTO = new ResponseDTO(token,null,null);
-            return ResponseEntity.ok(responseDTO);
-
-        }else {
-            ResponseDTO responseDTO = new ResponseDTO(token,"error",null);
-            return ResponseEntity.ok(responseDTO);
-        }
-    }
-//    public List<ViewDTO> getAllUsers(){
-//        List<User> userList = userRepo.findAll();
-//        return modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
-//        }.getType());
-//    }
-//    public ResponseEntity getAllUsers(){
-//        List<User> userList = userRepo.findAll();
-//        String token = jwtTokenUtil.generateToken("pasidu","ADMIN");
-//        DetailsDTO detailsDTO = new DetailsDTO(token,null,null,modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
-//        }.getType()));
-//        return ResponseEntity.ok(detailsDTO);
-//    }
-
-    public List<ViewDTO> getAllUsers(){
-        List<User> userList = userRepo.findAll();
-        return modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
-        }.getType());
-    }
-
-
-    public ResponseEntity updateUser(@RequestBody UpdateDTO updateDTO){
-        User user = userRepo.findByName(updateDTO.getName());
-        User user1 = modelMapper.map(user, User.class);
-        String token = jwtTokenUtil.generateToken(updateDTO.getName(),getDetail(updateDTO.getName()).getRole());
-        if (userRepo.existsById(user1.getId())){
-            user1.setRole(updateDTO.getNewRole());
-            userRepo.save(modelMapper.map(user1, User.class));
-            ResponseDTO responseDTO = new ResponseDTO(token,null,null);
-            return ResponseEntity.ok(responseDTO);
-
-        }else {
-            ResponseDTO responseDTO = new ResponseDTO(token,"error",null);
-            return ResponseEntity.ok(responseDTO);
-        }
-    }
-
-    public RegisterDTO getUser(int id){
-        if(userRepo.existsById(id)){
-            return modelMapper.map(userRepo.getReferenceById(id), RegisterDTO.class);
-        }
-        return null;
-    }
-
     public RegisterDTO getDetail(String name){
         User user = userRepo.findByName(name);
         return modelMapper.map(user, RegisterDTO.class);
     }
-    public ResponseEntity getDetails(InputNameDTO inputNameDTO){
-        User user = userRepo.findByName(inputNameDTO.getName());
 
-        String token = jwtTokenUtil.generateToken(inputNameDTO.getName(),getDetail(inputNameDTO.getName()).getRole());
-        DetailDTO detailDTO = new DetailDTO(token,null,null,modelMapper.map(user, ViewDTO.class));
-        return ResponseEntity.ok(detailDTO);
-
-    }
 
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
         try{
@@ -133,47 +56,7 @@ public class UserService {
         }
 
     }
-    public static boolean isValidPassword(String password) {
-        String regex = "^(?=.*[0-9])"
-                + "(?=.*[a-z])(?=.*[A-Z])"
-                + "(?=.*[@#$%^&+=])"
-                + "(?=\\S+$).{8,20}$";
-        Pattern p = Pattern.compile(regex);
-        if (password == null) {
-            return false;
-        }
-        Matcher m = p.matcher(password);
-        return m.matches();
-    }
-    public static boolean isValidPhoneNumber(String phonenumber) {
-        int len = phonenumber.length();
-        return (len == 10 && onlyDigits(phonenumber,len) && phonenumber.charAt(0) == '0');
-    }
-    public static boolean isValidId(String id) {
-        int len = id.length();
-        return (len == 12 && onlyDigits(id,len));
-    }
-    public static boolean onlyDigits(String str, int n)
-    {
-        for (int i = 0; i < n; i++) {
-            if (!Character.isDigit(str.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
     public ResponseEntity<?> saveUser(RegisterDTO registerDTO){
-        if(!isValidPassword(registerDTO.getPassword())){
-            throw new PasswordInvalidException();
-        }
-        else if(!isValidPhoneNumber(registerDTO.getPhoneNumber())){
-            throw new PhoneInvalidException();
-        }
-        else if (!isValidId(registerDTO.getIdNumber())){
-            throw new IdInvalidException();
-
-        }
-        else{
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String encodedPassword = passwordEncoder.encode(registerDTO.getPassword());
             registerDTO.setPassword(encodedPassword);
@@ -181,8 +64,6 @@ public class UserService {
             String token = jwtTokenUtil.generateToken(registerDTO.getName(), registerDTO.getRole());
             ResponseDTO responseDTO = new ResponseDTO(token,null,null);
             return ResponseEntity.ok(responseDTO);
-        }
-
 
     }
 

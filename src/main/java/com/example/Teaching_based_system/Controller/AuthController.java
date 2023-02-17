@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping
+@RequestMapping("/auth")
 @CrossOrigin
 public class AuthController {
     @Autowired
@@ -32,15 +32,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginDTO loginDTO){
         return userService.login(loginDTO);
-    }
-    @DeleteMapping("/delete")
-    public ResponseEntity delete(@RequestBody InputNameDTO inputNameDTO){
-        return userService.deleteUser(inputNameDTO);
-
-    }
-    @PutMapping("/update")
-    public ResponseEntity update(@RequestBody UpdateDTO updateDTO){
-        return userService.updateUser(updateDTO);
     }
 
 }

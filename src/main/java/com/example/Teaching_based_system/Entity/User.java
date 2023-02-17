@@ -1,10 +1,7 @@
 package com.example.Teaching_based_system.Entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,8 +9,7 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
