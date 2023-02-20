@@ -28,6 +28,10 @@ public class AuthController {
     public ResponseEntity login(@RequestBody LoginDTO loginDTO){
         return userService.login(loginDTO);
     }
+    @GetMapping("/getAllStudent")
+    public List<ViewDTO> getAllStudent(){
+        return userService.findAllStudent();
+    }
 
 
 }

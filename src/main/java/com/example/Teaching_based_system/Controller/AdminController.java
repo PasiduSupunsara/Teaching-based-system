@@ -25,7 +25,6 @@ public class AdminController {
     public ResponseEntity delete(@RequestBody InputNameDTO inputNameDTO){
         return userService.deleteUser(inputNameDTO);
     }
-
     @PutMapping("/update")
     public ResponseEntity update(@RequestBody UpdateDTO updateDTO){
         return userService.updateUser(updateDTO);
@@ -35,8 +34,5 @@ public class AdminController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/getAllStudent")
-    public List<ViewDTO> getAllStudent(@RequestBody RoleDTO roleDTO){
-        return userService.findAllStudent(roleDTO);
-    }
+
 }

@@ -151,8 +151,8 @@ public class UserService {
         return modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
         }.getType());
     }
-    public List<ViewDTO> findAllStudent(@RequestBody RoleDTO roleDTO){
-        List<User> userList = userRepo.findAllStudent(roleDTO.getRole());
+    public List<ViewDTO> findAllStudent(){
+        List<User> userList = userRepo.findAllStudent("STUDENT");
         System.out.println(userList);
         return modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
         }.getType());
