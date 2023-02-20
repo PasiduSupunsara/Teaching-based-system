@@ -35,7 +35,12 @@ public class JwtTokenUtil {
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
-
+    public String generateRefreshToken(String username, String role){
+        Map<String, Object> claims = new HashMap<>();
+        return Jwts.builder().setClaims(claims).setSubject(username + ',' + role).setIssuer("Pasidu.com").setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60*2))
+                .signWith(SignatureAlgorithm.HS256, secret).compact();
+    }
     public String generateToken(String username, String role) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, username, role);
@@ -44,7 +49,7 @@ public class JwtTokenUtil {
     private String createToken(Map<String, Object> claims, String subject,String role) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject + ',' + role).setIssuer("Pasidu.com").setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 

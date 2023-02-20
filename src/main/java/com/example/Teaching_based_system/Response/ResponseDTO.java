@@ -10,9 +10,13 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ResponseDTO {
-    private String token;
+    private String accessToken;
+    private String refreshToken ;
     private String error;
     private String message;
 
-
+    public ResponseDTO(String error, String message) {
+        this.error = error;
+        this.message = message;
+    }
 }
