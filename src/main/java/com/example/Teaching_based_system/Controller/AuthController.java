@@ -30,7 +30,15 @@ public class AuthController {
     }
     @GetMapping("/getAllStudent")
     public List<ViewDTO> getAllStudent(){
-        return userService.findAllStudent();
+        return userService.findAll("STUDENT");
+    }
+    @GetMapping("/getAllTeachers")
+    public List<ViewDTO> getAllTeachers(){
+        return userService.findAll("TEACHER");
+    }
+    @GetMapping("/getAllAdmins")
+    public List<ViewDTO> getAllAdmins(){
+        return userService.findAll("ADMIN");
     }
 
 

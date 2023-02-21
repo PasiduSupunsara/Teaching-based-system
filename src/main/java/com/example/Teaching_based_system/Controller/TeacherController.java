@@ -21,9 +21,6 @@ public class TeacherController {
     public String sayhello(){
         return "hello";
     }
-    @GetMapping("/getAllStudent")
-    public List<ViewDTO> getAllStudent(){
-        return userService.findAllStudent();
-    }
+
 
 }

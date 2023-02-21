@@ -55,7 +55,7 @@ public class UserService {
             UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
             String token = jwtTokenUtil.generateToken(loginDTO.getName(),getDetail(loginDTO.getName()).getRole());
             String refreshToken = jwtTokenUtil.generateRefreshToken(loginDTO.getName(),getDetail(loginDTO.getName()).getRole());
-            ResponseDTO responseDTO = new ResponseDTO(token,refreshToken,null,null);
+            ResponseDTO responseDTO = new ResponseDTO(token,refreshToken,null,null,getDetail(loginDTO.getName()).getRole());
             return ResponseEntity.ok(responseDTO);
         }
         catch (BadCredentialsException ex){
@@ -151,8 +151,8 @@ public class UserService {
         return modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
         }.getType());
     }
-    public List<ViewDTO> findAllStudent(){
-        List<User> userList = userRepo.findAllStudent("STUDENT");
+    public List<ViewDTO> findAll(String role){
+        List<User> userList = userRepo.findAllStudent(role);
         System.out.println(userList);
         return modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
         }.getType());

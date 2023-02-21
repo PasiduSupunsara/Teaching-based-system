@@ -14,6 +14,7 @@ public class ResponseDTO {
     private String refreshToken ;
     private String error;
     private String message;
+    private String role;
 
     public ResponseDTO(String error, String message) {
         this.error = error;
