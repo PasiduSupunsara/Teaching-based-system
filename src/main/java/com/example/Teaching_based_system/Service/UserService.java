@@ -3,6 +3,7 @@ package com.example.Teaching_based_system.Service;
 import com.example.Teaching_based_system.Exception.IdInvalidException;
 import com.example.Teaching_based_system.Exception.PasswordInvalidException;
 import com.example.Teaching_based_system.Exception.PhoneInvalidException;
+import com.example.Teaching_based_system.Exception.UserNameException;
 import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.Response.ResponseDTO;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
@@ -78,6 +79,16 @@ public class UserService {
         Matcher m = p.matcher(password);
         return m.matches();
     }
+    public static boolean isValidName(String name) {
+        String regex ="^(?=.*[a-z])(?=.*[A-Z])" + "(?=\\S+$)$";
+        Pattern p = Pattern.compile(regex);
+        if (name == null) {
+            return false;
+        }
+        Matcher m = p.matcher(name);
+        return m.matches();
+    }
+
     public static boolean isValidPhoneNumber(String phonenumber) {
         int len = phonenumber.length();
         return (len == 10 && onlyDigits(phonenumber,len) && phonenumber.charAt(0) == '0');
@@ -104,7 +115,15 @@ public class UserService {
         }
         else if (!isValidId(registerDTO.getIdNumber())){
             throw new IdInvalidException();
-
+        }
+        else if(!isValidName(registerDTO.getName())){
+            throw new UserNameException();
+        }
+        else if(!isValidName(registerDTO.getFirstName())){
+            throw new UserNameException();
+        }
+        else if(!isValidName(registerDTO.getLastName())){
+            throw new UserNameException();
         }
         else{
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
