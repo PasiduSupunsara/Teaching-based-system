@@ -32,7 +32,7 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
     @Autowired
-    protected ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -76,14 +76,29 @@ public class UserService {
         Matcher m = p.matcher(password);
         return m.matches();
     }
-    public static boolean isValidName(String name) {
-        String regex ="^(?=.*[a-z])(?=.*[A-Z])" + "(?=\\S+$)$";
-        Pattern p = Pattern.compile(regex);
-        if (name == null) {
+    public static Boolean isValidName(String name){
+        if (name.length() == 0 || name.length() == 1){
             return false;
         }
-        Matcher m = p.matcher(name);
-        return m.matches();
+        for (int i = 0; i < name.length(); i++) {
+            if (!Character.isLetter(name.charAt(i) )){
+                return false;
+            }
+        }
+        return true;
+    }
+    public static Boolean isValidUserName(String name){
+        if (name.length() == 0 || name.length() == 1){
+            return false;
+        } else if (!Character.isLetter(name.charAt(0))) {
+            return false;
+        }
+        for (int i = 1; i < name.length(); i++) {
+            if (!(Character.isLetter(name.charAt(i)) || Character.isDigit(name.charAt(i)))){
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean isValidPhoneNumber(String phonenumber) {
@@ -113,14 +128,14 @@ public class UserService {
         else if (!isValidId(registerDTO.getIdNumber())){
             throw new IdInvalidException();
         }
-        else if(!isValidName(registerDTO.getName())){
+        else if(!isValidUserName(registerDTO.getName())){
             throw new UserNameException();
         }
         else if(!isValidName(registerDTO.getFirstName())){
-            throw new UserNameException();
+            throw new NameException();
         }
         else if(!isValidName(registerDTO.getLastName())){
-            throw new UserNameException();
+            throw new NameException();
         }
         else{
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -138,9 +153,15 @@ public class UserService {
         User user = userRepo.findByName(inputNameDTO.getName());
         RegisterDTO registerDTO1 = modelMapper.map(user, RegisterDTO.class);
         if (userRepo.existsById(registerDTO1.getId())){
-            userRepo.delete(modelMapper.map(registerDTO1, User.class));
-            ResponseDTO responseDTO = new ResponseDTO(null,null);
-            return ResponseEntity.ok(responseDTO);
+            if ((inputNameDTO.getName()).equals((inputNameDTO.getPrincipalName()))){
+                throw new UsercanthandleException();
+            }
+            else{
+                userRepo.delete(modelMapper.map(registerDTO1, User.class));
+                ResponseDTO responseDTO = new ResponseDTO(null,null);
+                return ResponseEntity.ok(responseDTO);
+            }
+
 
         }else {
             ResponseDTO responseDTO = new ResponseDTO("error",null);

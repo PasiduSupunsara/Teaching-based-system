@@ -1,20 +1,15 @@
 package com.example.Teaching_based_system.RequestDTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class InputNameDTO {
     private String name;
-
-    public InputNameDTO(String name) {
-        this.name = name;
-    }
-
-    public InputNameDTO() {
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String  principalName;
 }

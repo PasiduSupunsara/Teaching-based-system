@@ -1,8 +1,10 @@
 package com.example.Teaching_based_system.Controller;
 
+import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.JWT.JwtTokenUtil;
 import com.example.Teaching_based_system.Response.ViewDTO;
+import com.example.Teaching_based_system.Service.AdminService;
 import com.example.Teaching_based_system.Service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import java.util.List;
 public class AuthController {
     @Autowired
     private UserService userService;
+
+
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody RegisterDTO registerDTO){
         return userService.saveUser(registerDTO);
@@ -40,6 +44,8 @@ public class AuthController {
     public List<ViewDTO> getAllAdmins(){
         return userService.findAll("ADMIN");
     }
+
+
 
 
 }
