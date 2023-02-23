@@ -1,9 +1,6 @@
 package com.example.Teaching_based_system.Service;
 
-import com.example.Teaching_based_system.Exception.IdInvalidException;
-import com.example.Teaching_based_system.Exception.PasswordInvalidException;
-import com.example.Teaching_based_system.Exception.PhoneInvalidException;
-import com.example.Teaching_based_system.Exception.UserNameException;
+import com.example.Teaching_based_system.Exception.*;
 import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.Response.ResponseDTO;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
@@ -155,10 +152,16 @@ public class UserService {
         User user = userRepo.findByName(updateDTO.getName());
         User user1 = modelMapper.map(user, User.class);
         if (userRepo.existsById(user1.getId())){
-            user1.setRole(updateDTO.getNewRole());
-            userRepo.save(modelMapper.map(user1, User.class));
-            ResponseDTO responseDTO = new ResponseDTO(null,null);
-            return ResponseEntity.ok(responseDTO);
+            if((updateDTO.getName()).equals(updateDTO.getPrincipalName())){
+                System.out.println(2);
+                throw new UsercanthandleException();
+            }
+            else{user1.setRole(updateDTO.getNewRole());
+                System.out.println(3);
+                userRepo.save(modelMapper.map(user1, User.class));
+                ResponseDTO responseDTO = new ResponseDTO(null,null);
+                return ResponseEntity.ok(responseDTO);}
+
 
         }else {
             ResponseDTO responseDTO = new ResponseDTO("error",null);

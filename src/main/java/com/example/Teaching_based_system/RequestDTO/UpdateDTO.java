@@ -1,30 +1,17 @@
 package com.example.Teaching_based_system.RequestDTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class UpdateDTO {
     public String name;
     public String newRole;
+    public String  principalName;
 
-    public UpdateDTO() {
-    }
-
-    public UpdateDTO(String name, String newRole) {
-        this.name = name;
-        this.newRole = newRole;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getNewRole() {
-        return newRole;
-    }
-
-    public void setNewRole(String newRole) {
-        this.newRole = newRole;
-    }
 }

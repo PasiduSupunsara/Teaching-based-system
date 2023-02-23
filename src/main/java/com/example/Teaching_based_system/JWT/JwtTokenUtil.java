@@ -38,7 +38,7 @@ public class JwtTokenUtil {
     public String generateRefreshToken(String username, String role){
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder().setClaims(claims).setSubject(username + ',' + role).setIssuer("Pasidu.com").setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60*2))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60*20))
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
     public String generateToken(String username, String role) {
