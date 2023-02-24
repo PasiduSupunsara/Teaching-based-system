@@ -1,8 +1,11 @@
 package com.example.Teaching_based_system.Controller;
 
 import com.example.Teaching_based_system.Entity.Course;
+import com.example.Teaching_based_system.Entity.User;
+import com.example.Teaching_based_system.RequestDTO.InputId;
 import com.example.Teaching_based_system.RequestDTO.InputNameDTO;
 import com.example.Teaching_based_system.RequestDTO.UpdateDTO;
+import com.example.Teaching_based_system.ResponseDTO.Out3DTO;
 import com.example.Teaching_based_system.ResponseDTO.ViewDTO;
 import com.example.Teaching_based_system.Service.AdminService;
 import com.example.Teaching_based_system.Service.UserService;
@@ -37,7 +40,12 @@ public class AdminController {
         System.out.println(course);
         return adminService.saveCourse(course);
     }
-
-
-
+    @GetMapping("/getAllCourses")
+    public List<Course> getAllCourses(){
+        return adminService.getAllcourses();
+    }
+    @GetMapping("/getAllStudentForCourse")
+    public List<Out3DTO> findAllByCourseid(){
+        return adminService.findAllByCourseid();
+    }
 }

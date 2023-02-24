@@ -49,8 +49,8 @@ public class AuthController {
     }
 
     @GetMapping("/getCoursenameByUserId")
-    public List<OutDTO> getCoursenameByUserId(){
-        return studentService.getCoursenameByUserId();
+    public List<OutDTO> getCoursenameByUserId(@RequestBody InputId inputId){
+        return studentService.getCoursenameByUserId(inputId);
     }
 
     @GetMapping("/findCourseNameByUserIdForTeacher")
@@ -59,13 +59,13 @@ public class AuthController {
     }
 
     @GetMapping("/findTeacherId")
-    public List<Out1DTO> findTeacherId(){
-        return teacherService.findTeacherId();
+    public List<Out1DTO> findTeacherId(@RequestBody InputId inputId){
+        return teacherService.findTeacherId(inputId);
     }
 
     @GetMapping("/findTeacherName")
-    public List<Out2DTO> findTeacherName(){
-        return teacherService.findTeacherName();
+    public List<Out2DTO> findTeacherName(@RequestBody InputId inputId){
+        return teacherService.findTeacherName(inputId);
     }
 
 

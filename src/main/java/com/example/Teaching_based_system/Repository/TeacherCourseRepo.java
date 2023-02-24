@@ -16,10 +16,10 @@ public interface TeacherCourseRepo extends JpaRepository<Courseteacher, TeacherP
     @Query(value = "SELECT coursename FROM course", nativeQuery = true)
     List<OutDTO> findCourseNameByUserIdForTeacher();
 
-    @Query(value = "SELECT ct.tid FROM coursestudent cs join courseteacher ct on cs.courseid = ct.courseid where cs.sid = 1", nativeQuery = true)
-    List<Out1DTO> findTeacherId();
+    @Query(value = "SELECT ct.tid FROM coursestudent cs join courseteacher ct on cs.courseid = ct.courseid where cs.sid = ?1", nativeQuery = true)
+    List<Out1DTO> findTeacherId(int sid);
 
-    @Query(value = "SELECT u.name FROM coursestudent cs join courseteacher ct on cs.courseid = ct.courseid join user u on u.id = ct.tid where cs.sid = 1", nativeQuery = true)
-    List<Out2DTO> findTeacherName();
+    @Query(value = "SELECT u.name FROM coursestudent cs join courseteacher ct on cs.courseid = ct.courseid join user u on u.id = ct.tid where cs.sid = ?1", nativeQuery = true)
+    List<Out2DTO> findTeacherName(int sid);
 
 }
