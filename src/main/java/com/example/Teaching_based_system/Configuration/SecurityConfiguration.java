@@ -57,7 +57,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable().cors();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
-                .antMatchers("/login","/signup","/getAllStudent","/getCoursenameByUserId","/findCourseNameByUserIdForTeacher").permitAll()
+                .antMatchers("/login","/signup","/getAllStudent","/getCoursenameByUserId","/findCourseNameByUserIdForTeacher","/findTeacherId","/findTeacherName").permitAll()
                 .antMatchers("/getAllStudent").hasAnyAuthority("ADMIN","TEACHER")
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/teacher/**").hasAuthority("TEACHER")
@@ -65,12 +65,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         http.addFilterBefore(new JWTTokenFilter(jwtTokenUtil,userDetailsService()), UsernamePasswordAuthenticationFilter.class);
-
-
-
-
-
-
     }
 }
 

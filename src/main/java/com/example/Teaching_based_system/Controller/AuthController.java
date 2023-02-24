@@ -1,6 +1,8 @@
 package com.example.Teaching_based_system.Controller;
 
 import com.example.Teaching_based_system.RequestDTO.*;
+import com.example.Teaching_based_system.ResponseDTO.Out1DTO;
+import com.example.Teaching_based_system.ResponseDTO.Out2DTO;
 import com.example.Teaching_based_system.ResponseDTO.OutDTO;
 import com.example.Teaching_based_system.ResponseDTO.ViewDTO;
 import com.example.Teaching_based_system.Service.StudentService;
@@ -54,6 +56,16 @@ public class AuthController {
     @GetMapping("/findCourseNameByUserIdForTeacher")
     public List<OutDTO> findCourseNameByUserIdForTeacher(){
         return teacherService.findCourseNameByUserIdForTeacher();
+    }
+
+    @GetMapping("/findTeacherId")
+    public List<Out1DTO> findTeacherId(){
+        return teacherService.findTeacherId();
+    }
+
+    @GetMapping("/findTeacherName")
+    public List<Out2DTO> findTeacherName(){
+        return teacherService.findTeacherName();
     }
 
 
