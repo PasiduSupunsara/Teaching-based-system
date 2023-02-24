@@ -2,12 +2,12 @@ package com.example.Teaching_based_system.Service;
 
 import com.example.Teaching_based_system.Exception.*;
 import com.example.Teaching_based_system.RequestDTO.*;
-import com.example.Teaching_based_system.Response.ResponseDTO;
+import com.example.Teaching_based_system.ResponseDTO.ResponseDTO;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
 import com.example.Teaching_based_system.Entity.User;
 import com.example.Teaching_based_system.JWT.JwtTokenUtil;
 import com.example.Teaching_based_system.Repository.UserRepo;
-import com.example.Teaching_based_system.Response.ViewDTO;
+import com.example.Teaching_based_system.ResponseDTO.ViewDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;

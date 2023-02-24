@@ -1,24 +1,17 @@
-package com.example.Teaching_based_system.Response;
+package com.example.Teaching_based_system.ResponseDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class DetailsDTO{
-
+public class DetailDTO {
     private String token;
     private String error;
     private String message;
-    private List<ViewDTO> userDetails;
-
-
-
-
+    private ViewDTO userDetails;
 }

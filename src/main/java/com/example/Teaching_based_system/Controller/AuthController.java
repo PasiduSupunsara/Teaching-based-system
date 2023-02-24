@@ -1,15 +1,13 @@
 package com.example.Teaching_based_system.Controller;
 
-import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.RequestDTO.*;
-import com.example.Teaching_based_system.JWT.JwtTokenUtil;
-import com.example.Teaching_based_system.Response.ViewDTO;
-import com.example.Teaching_based_system.Service.AdminService;
+import com.example.Teaching_based_system.ResponseDTO.OutDTO;
+import com.example.Teaching_based_system.ResponseDTO.ViewDTO;
+import com.example.Teaching_based_system.Service.StudentService;
+import com.example.Teaching_based_system.Service.TeacherService;
 import com.example.Teaching_based_system.Service.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +20,10 @@ import java.util.List;
 public class AuthController {
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private TeacherService teacherService;
 
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody RegisterDTO registerDTO){
@@ -43,6 +44,16 @@ public class AuthController {
     @GetMapping("/getAllAdmins")
     public List<ViewDTO> getAllAdmins(){
         return userService.findAll("ADMIN");
+    }
+
+    @GetMapping("/getCoursenameByUserId")
+    public List<OutDTO> getCoursenameByUserId(){
+        return studentService.getCoursenameByUserId();
+    }
+
+    @GetMapping("/findCourseNameByUserIdForTeacher")
+    public List<OutDTO> findCourseNameByUserIdForTeacher(){
+        return teacherService.findCourseNameByUserIdForTeacher();
     }
 
 

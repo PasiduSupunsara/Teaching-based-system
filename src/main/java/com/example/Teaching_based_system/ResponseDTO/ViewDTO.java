@@ -1,4 +1,4 @@
-package com.example.Teaching_based_system.Response;
+package com.example.Teaching_based_system.ResponseDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
