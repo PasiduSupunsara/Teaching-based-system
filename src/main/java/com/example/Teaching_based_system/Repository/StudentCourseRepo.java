@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface StudentCourseRepo extends JpaRepository<Coursestudent, MyTableId> {
-    @Query(value = "SELECT co.coursename FROM course co join coursestudent cs on cs.courseid = co.courseid where cs.uid= 30", nativeQuery = true)
+    @Query(value = "SELECT co.coursename FROM course co join coursestudent cs on cs.courseid = co.courseid where cs.sid= 1", nativeQuery = true)
         List<OutDTO> findCourseNameByUserId();
 
 }

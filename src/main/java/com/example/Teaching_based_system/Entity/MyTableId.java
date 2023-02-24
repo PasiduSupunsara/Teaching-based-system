@@ -12,6 +12,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 public class MyTableId implements Serializable {
-    private int uid;
+    private int sid;
     private int courseid;
 }
