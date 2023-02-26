@@ -35,17 +35,26 @@ public class AdminController {
     public List<ViewDTO> getAllUsers(){
         return userService.getAllUsers();
     }
-    @PostMapping("/saveCourse")
-    public Course saveCourse(@RequestBody Course course){
-        System.out.println(course);
-        return adminService.saveCourse(course);
+    @GetMapping("/getAllStudent")
+    public List<ViewDTO> getAllStudent(){
+        return userService.findAll("STUDENT");
     }
+    @GetMapping("/getAllTeachers")
+    public List<ViewDTO> getAllTeachers(){
+        return userService.findAll("TEACHER");
+    }
+    @GetMapping("/getAllAdmins")
+    public List<ViewDTO> getAllAdmins(){
+        return userService.findAll("ADMIN");
+    }
+
+
     @GetMapping("/getAllCourses")
     public List<Course> getAllCourses(){
         return adminService.getAllcourses();
     }
     @GetMapping("/getAllStudentForCourse")
-    public List<Out3DTO> findAllByCourseid(){
-        return adminService.findAllByCourseid();
+    public List<Out3DTO> findAllByCourseid(@RequestBody InputId inputId){
+        return adminService.findAllByCourseid(inputId);
     }
 }

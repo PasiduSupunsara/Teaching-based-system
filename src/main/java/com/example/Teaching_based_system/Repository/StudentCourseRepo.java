@@ -14,6 +14,7 @@ public interface StudentCourseRepo extends JpaRepository<Coursestudent, MyTableI
     @Query(value = "SELECT co.coursename FROM course co join coursestudent cs on cs.courseid = co.courseid where cs.sid= ?1", nativeQuery = true)
         List<OutDTO> findCourseNameByUserId(int sid);
 
-
+    @Query(value = "select count(sid) from coursestudent where courseid = ?1",nativeQuery = true)
+        int countStudentByCourseId(int courseid);
 
 }

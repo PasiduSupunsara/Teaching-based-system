@@ -1,10 +1,12 @@
 package com.example.Teaching_based_system.Controller;
 
+import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.ResponseDTO.Out1DTO;
 import com.example.Teaching_based_system.ResponseDTO.Out2DTO;
 import com.example.Teaching_based_system.ResponseDTO.OutDTO;
 import com.example.Teaching_based_system.ResponseDTO.ViewDTO;
+import com.example.Teaching_based_system.Service.AdminService;
 import com.example.Teaching_based_system.Service.StudentService;
 import com.example.Teaching_based_system.Service.TeacherService;
 import com.example.Teaching_based_system.Service.UserService;
@@ -27,6 +29,9 @@ public class AuthController {
     @Autowired
     private TeacherService teacherService;
 
+    @Autowired
+    private AdminService adminService;
+
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody RegisterDTO registerDTO){
         return userService.saveUser(registerDTO);
@@ -34,18 +39,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginDTO loginDTO){
         return userService.login(loginDTO);
-    }
-    @GetMapping("/getAllStudent")
-    public List<ViewDTO> getAllStudent(){
-        return userService.findAll("STUDENT");
-    }
-    @GetMapping("/getAllTeachers")
-    public List<ViewDTO> getAllTeachers(){
-        return userService.findAll("TEACHER");
-    }
-    @GetMapping("/getAllAdmins")
-    public List<ViewDTO> getAllAdmins(){
-        return userService.findAll("ADMIN");
     }
 
     @GetMapping("/getCoursenameByUserId")
@@ -67,8 +60,9 @@ public class AuthController {
     public List<Out2DTO> findTeacherName(@RequestBody InputId inputId){
         return teacherService.findTeacherName(inputId);
     }
-
-
-
-
+    @PostMapping("/saveCourse")
+    public Course saveCourse(@RequestBody Course course){
+        System.out.println(course);
+        return adminService.saveCourse(course);
+    }
 }

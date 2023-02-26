@@ -30,7 +30,7 @@ public class AdminService {
         return courseRepo.findAll();
     }
 
-    public List<Out3DTO> findAllByCourseid(){
-        return courseRepo.findAllByCourseid();
+    public List<Out3DTO> findAllByCourseid(InputId inputId){
+        return courseRepo.findAllByCourseid(inputId.getId());
     }
 }
