@@ -4,6 +4,7 @@ import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Coursestudent;
 import com.example.Teaching_based_system.Repository.CourseRepo;
 import com.example.Teaching_based_system.Repository.StudentCourseRepo;
+import com.example.Teaching_based_system.RequestDTO.Input2;
 import com.example.Teaching_based_system.RequestDTO.InputId;
 import com.example.Teaching_based_system.ResponseDTO.OutDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ public class StudentService {
     }
     public  List<Course> findAllCoursesById(InputId inputId){
         return courseRepo.findAllCourseById(inputId.getId());
+    }
+
+    public int CountCourseStudent(Input2 input2){
+        return studentCourseRepo.CountCourseStudent(input2.getSid(), input2.getCourseid());
     }
 }
 

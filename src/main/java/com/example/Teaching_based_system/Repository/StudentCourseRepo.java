@@ -17,4 +17,7 @@ public interface StudentCourseRepo extends JpaRepository<Coursestudent, MyTableI
     @Query(value = "select count(sid) from coursestudent where courseid = ?1",nativeQuery = true)
         int countStudentByCourseId(int courseid);
 
+    @Query(value = "SELECT COUNT(*) FROM coursestudent WHERE sid =?1 AND courseid = ?2 ",nativeQuery = true)
+    int CountCourseStudent(int sid,int courseid);
+
 }

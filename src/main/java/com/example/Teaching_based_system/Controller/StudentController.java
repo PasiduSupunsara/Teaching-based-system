@@ -4,6 +4,7 @@ import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Coursestudent;
 import com.example.Teaching_based_system.Repository.CourseRepo;
 import com.example.Teaching_based_system.Repository.StudentCourseRepo;
+import com.example.Teaching_based_system.RequestDTO.Input2;
 import com.example.Teaching_based_system.RequestDTO.InputId;
 import com.example.Teaching_based_system.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,19 @@ public class StudentController {
         }
         return studentService.saveCourseStudent(coursestudent);
     }
-    @GetMapping("/findAllCoursesById")
+    @PostMapping("/findAllCoursesById")
     public List<Course> findAllCoursesById(@RequestBody InputId inputId){
         return studentService.findAllCoursesById(inputId);
     }
     @GetMapping("/getAllCourses")
     public List<Course> getAllcourses(){
         return courseRepo.findAll();
+    }
+
+    @PostMapping("/CountCourseStudent")
+    public int CountCourseStudent(@RequestBody Input2 input2){
+        System.out.println(studentService.CountCourseStudent(input2));
+        return studentService.CountCourseStudent(input2);
     }
 
 
