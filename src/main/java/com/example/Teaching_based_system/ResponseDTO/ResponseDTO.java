@@ -15,6 +15,7 @@ public class ResponseDTO {
     private String error;
     private String message;
     private String role;
+    private int uid;
 
     public ResponseDTO(String error, String message) {
         this.error = error;

@@ -53,7 +53,7 @@ public class UserService {
             UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
             String token = jwtTokenUtil.generateToken(loginDTO.getName(),getDetail(loginDTO.getName()).getRole());
             String refreshToken = jwtTokenUtil.generateRefreshToken(loginDTO.getName(),getDetail(loginDTO.getName()).getRole());
-            ResponseDTO responseDTO = new ResponseDTO(token,refreshToken,null,null,getDetail(loginDTO.getName()).getRole());
+            ResponseDTO responseDTO = new ResponseDTO(token,refreshToken,null,null,getDetail(loginDTO.getName()).getRole(),getDetail(loginDTO.getName()).getId());
             return ResponseEntity.ok(responseDTO);
         }
         catch (BadCredentialsException ex){

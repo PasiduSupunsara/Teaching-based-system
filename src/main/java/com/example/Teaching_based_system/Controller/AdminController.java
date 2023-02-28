@@ -57,4 +57,9 @@ public class AdminController {
     public List<Out3DTO> findAllByCourseid(@RequestBody InputId inputId){
         return adminService.findAllByCourseid(inputId);
     }
+    @PostMapping("/saveCourse")
+    public Course saveCourse(@RequestBody Course course){
+        System.out.println(course);
+        return adminService.saveCourse(course);
+    }
 }

@@ -60,9 +60,5 @@ public class AuthController {
     public List<Out2DTO> findTeacherName(@RequestBody InputId inputId){
         return teacherService.findTeacherName(inputId);
     }
-    @PostMapping("/saveCourse")
-    public Course saveCourse(@RequestBody Course course){
-        System.out.println(course);
-        return adminService.saveCourse(course);
-    }
+
 }

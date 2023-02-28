@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class Course {
     private String coursename;
     private String medium;
     private String description;
-    private String startdate;
+    private LocalDate startdate;
     private String duration;
     private String fee;
 }
