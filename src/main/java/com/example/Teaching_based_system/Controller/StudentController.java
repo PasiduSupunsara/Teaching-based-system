@@ -47,7 +47,6 @@ public class StudentController {
     }
     @DeleteMapping("/deleteMappingstudentcourse")
     public void deleteMapping(@RequestBody Input2 input2){
-        System.out.println(input2);
         studentService.deleteMapping(input2);
     }
 
