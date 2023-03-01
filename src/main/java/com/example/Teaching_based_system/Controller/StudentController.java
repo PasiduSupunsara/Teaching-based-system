@@ -51,7 +51,6 @@ public class StudentController {
     }
     @PostMapping("/findByCourseId")
     public Course findByCourseId(@RequestBody InputId inputId){
-        System.out.println(inputId);
         return studentService.findByCourseId(inputId);
     }
 
