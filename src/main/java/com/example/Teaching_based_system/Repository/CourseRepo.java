@@ -16,4 +16,7 @@ public interface CourseRepo extends JpaRepository<Course,Integer> {
 
     @Query(value = "SELECT co.* from coursestudent cs join course co on cs.courseid = co.courseid where cs.sid = ?1",nativeQuery = true)
     List<Course> findAllCourseById(int sid);
+
+    @Query(value = "select * from course where courseid = ?1",nativeQuery = true)
+    Course findCourseDetailsByCourseid(int courseid);
 }

@@ -40,5 +40,9 @@ public class StudentService {
     public void deleteMapping(Input2 input2){
         studentCourseRepo.deleteById(modelMapper.map(input2, MyTableId.class));
     }
+
+    public Course findByCourseId(int id){
+        return courseRepo.findCourseDetailsByCourseid(id);
+    }
 }
 

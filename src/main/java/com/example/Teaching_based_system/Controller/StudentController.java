@@ -49,6 +49,10 @@ public class StudentController {
     public void deleteMapping(@RequestBody Input2 input2){
         studentService.deleteMapping(input2);
     }
+    @PostMapping("/findByCourseId")
+    public Course findByCourseId(int id){
+        return studentService.findByCourseId(id);
+    }
 
 
 

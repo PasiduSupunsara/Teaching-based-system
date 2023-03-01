@@ -174,11 +174,9 @@ public class UserService {
         User user1 = modelMapper.map(user, User.class);
         if (userRepo.existsById(user1.getId())){
             if((updateDTO.getName()).equals(updateDTO.getPrincipalName())){
-                System.out.println(2);
                 throw new UsercanthandleException();
             }
             else{user1.setRole(updateDTO.getNewRole());
-                System.out.println(3);
                 userRepo.save(modelMapper.map(user1, User.class));
                 ResponseDTO responseDTO = new ResponseDTO(null,null);
                 return ResponseEntity.ok(responseDTO);}
@@ -196,7 +194,6 @@ public class UserService {
     }
     public List<ViewDTO> findAll(String role){
         List<User> userList = userRepo.findAllStudent(role);
-        System.out.println(userList);
         return modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
         }.getType());
     }
