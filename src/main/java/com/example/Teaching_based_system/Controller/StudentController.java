@@ -50,8 +50,9 @@ public class StudentController {
         studentService.deleteMapping(input2);
     }
     @PostMapping("/findByCourseId")
-    public Course findByCourseId(int id){
-        return studentService.findByCourseId(id);
+    public Course findByCourseId(@RequestBody InputId inputId){
+        System.out.println(inputId);
+        return studentService.findByCourseId(inputId);
     }
 
 

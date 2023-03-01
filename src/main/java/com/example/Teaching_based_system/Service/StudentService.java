@@ -41,8 +41,8 @@ public class StudentService {
         studentCourseRepo.deleteById(modelMapper.map(input2, MyTableId.class));
     }
 
-    public Course findByCourseId(int id){
-        return courseRepo.findCourseDetailsByCourseid(id);
+    public Course findByCourseId(InputId inputId){
+        return courseRepo.findCourseDetailsByCourseid(inputId.getId());
     }
 }
 
