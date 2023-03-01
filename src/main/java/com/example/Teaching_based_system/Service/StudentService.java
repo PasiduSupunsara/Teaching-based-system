@@ -2,11 +2,13 @@ package com.example.Teaching_based_system.Service;
 
 import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Coursestudent;
+import com.example.Teaching_based_system.Entity.MyTableId;
 import com.example.Teaching_based_system.Repository.CourseRepo;
 import com.example.Teaching_based_system.Repository.StudentCourseRepo;
 import com.example.Teaching_based_system.RequestDTO.Input2;
 import com.example.Teaching_based_system.RequestDTO.InputId;
 import com.example.Teaching_based_system.ResponseDTO.OutDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ public class StudentService {
     private StudentCourseRepo studentCourseRepo;
     @Autowired
     private CourseRepo courseRepo;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public Coursestudent saveCourseStudent(Coursestudent coursestudent){
         return studentCourseRepo.save(coursestudent);
@@ -32,6 +36,9 @@ public class StudentService {
 
     public int CountCourseStudent(Input2 input2){
         return studentCourseRepo.CountCourseStudent(input2.getSid(), input2.getCourseid());
+    }
+    public void deleteMapping(Input2 input2){
+        studentCourseRepo.deleteById(modelMapper.map(input2, MyTableId.class));
     }
 }
 

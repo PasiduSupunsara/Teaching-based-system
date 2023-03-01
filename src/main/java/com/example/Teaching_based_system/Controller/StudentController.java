@@ -43,9 +43,14 @@ public class StudentController {
 
     @PostMapping("/CountCourseStudent")
     public int CountCourseStudent(@RequestBody Input2 input2){
-        System.out.println(studentService.CountCourseStudent(input2));
         return studentService.CountCourseStudent(input2);
     }
+    @DeleteMapping("/deleteMappingstudentcourse")
+    public void deleteMapping(@RequestBody Input2 input2){
+        System.out.println(input2);
+        studentService.deleteMapping(input2);
+    }
+
 
 
 
