@@ -22,4 +22,5 @@ public class Course {
     private LocalDate startdate;
     private String duration;
     private String fee;
+    private int state = 0;
 }

@@ -60,5 +60,9 @@ public class AuthController {
     public List<Out2DTO> findTeacherName(@RequestBody InputId inputId){
         return teacherService.findTeacherName(inputId);
     }
+    @GetMapping("/getAllCourses")
+    public List<Course> getAllCourses(){
+        return adminService.getAllcourses();
+    }
 
 }

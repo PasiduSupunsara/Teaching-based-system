@@ -48,11 +48,6 @@ public class AdminController {
         return userService.findAll("ADMIN");
     }
 
-
-    @GetMapping("/getAllCourses")
-    public List<Course> getAllCourses(){
-        return adminService.getAllcourses();
-    }
     @GetMapping("/getAllStudentForCourse")
     public List<Out3DTO> findAllByCourseid(@RequestBody InputId inputId){
         return adminService.findAllByCourseid(inputId);

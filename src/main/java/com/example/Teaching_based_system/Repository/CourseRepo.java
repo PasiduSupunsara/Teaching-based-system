@@ -1,7 +1,6 @@
 package com.example.Teaching_based_system.Repository;
 
 import com.example.Teaching_based_system.Entity.Course;
-import com.example.Teaching_based_system.Entity.User;
 import com.example.Teaching_based_system.ResponseDTO.Out3DTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
