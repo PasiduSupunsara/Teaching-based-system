@@ -1,9 +1,11 @@
 package com.example.Teaching_based_system.Repository;
 
+import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Courseteacher;
 import com.example.Teaching_based_system.Entity.TeacherPrimary;
 import com.example.Teaching_based_system.ResponseDTO.Out1DTO;
 import com.example.Teaching_based_system.ResponseDTO.Out2DTO;
+import com.example.Teaching_based_system.ResponseDTO.Out3DTO;
 import com.example.Teaching_based_system.ResponseDTO.OutDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,5 +23,7 @@ public interface TeacherCourseRepo extends JpaRepository<Courseteacher, TeacherP
 
     @Query(value = "SELECT u.name FROM coursestudent cs join courseteacher ct on cs.courseid = ct.courseid join user u on u.id = ct.tid where cs.sid = ?1", nativeQuery = true)
     List<Out2DTO> findTeacherName(int sid);
+
+
 
 }

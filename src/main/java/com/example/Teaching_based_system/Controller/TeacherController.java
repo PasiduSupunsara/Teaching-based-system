@@ -2,6 +2,7 @@ package com.example.Teaching_based_system.Controller;
 
 import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Courseteacher;
+import com.example.Teaching_based_system.Repository.CourseRepo;
 import com.example.Teaching_based_system.RequestDTO.InputId;
 import com.example.Teaching_based_system.ResponseDTO.ViewDTO;
 import com.example.Teaching_based_system.Service.StudentService;
@@ -24,6 +25,9 @@ public class TeacherController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CourseRepo courseRepo;
+
     @GetMapping("/getAllStudent")
     public List<ViewDTO> getAllStudent(){
         return userService.findAll("STUDENT");
@@ -32,14 +36,18 @@ public class TeacherController {
     public Courseteacher saveCourseTeacher(@RequestBody Courseteacher courseteacher){
         return teacherService.saveCourseTeacher(courseteacher);
     }
-    @GetMapping("/findAllCoursesById")
+    @PostMapping("/findAllCoursesById")
     public List<Course> findAllCoursesById(@RequestBody InputId inputId){
-        return studentService.findAllCoursesById(inputId);
+        return teacherService.findAllCoursesById(inputId);
     }
 
     @GetMapping("/countStudentByCourseId")
     public int countStudentByCourseId(@RequestBody InputId inputId){
         return teacherService.countStudentByCourseId(inputId);
+    }
+    @GetMapping("/getAllCourses")
+    public List<Course> getAllcourses(){
+        return courseRepo.findAll();
     }
 
 

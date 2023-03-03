@@ -1,6 +1,8 @@
 package com.example.Teaching_based_system.Service;
 
+import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Courseteacher;
+import com.example.Teaching_based_system.Repository.CourseRepo;
 import com.example.Teaching_based_system.Repository.StudentCourseRepo;
 import com.example.Teaching_based_system.Repository.TeacherCourseRepo;
 import com.example.Teaching_based_system.RequestDTO.InputId;
@@ -16,7 +18,8 @@ import java.util.List;
 public class TeacherService {
     @Autowired
     private TeacherCourseRepo teacherCourseRepo;
-
+    @Autowired
+    private CourseRepo courseRepo;
     @Autowired
     private StudentCourseRepo studentCourseRepo;
     public Courseteacher saveCourseTeacher(Courseteacher courseteacher){
@@ -36,5 +39,7 @@ public class TeacherService {
         return studentCourseRepo.countStudentByCourseId(inputId.getId());
     }
 
-
+    public  List<Course> findAllCoursesById(InputId inputId){
+        return courseRepo.findAllCourseByIdforTeacher(inputId.getId());
+    }
 }
