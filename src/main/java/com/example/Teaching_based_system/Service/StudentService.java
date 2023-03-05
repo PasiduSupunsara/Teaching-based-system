@@ -30,9 +30,7 @@ public class StudentService {
     public List<OutDTO> getCoursenameByUserId(InputId inputId){
         return studentCourseRepo.findCourseNameByUserId(inputId.getId());
     }
-    public  List<Course> findAllCoursesById(InputId inputId){
-        return courseRepo.findAllCourseById(inputId.getId());
-    }
+
 
     public int CountCourseStudent(Input2 input2){
         return studentCourseRepo.CountCourseStudent(input2.getSid(), input2.getCourseid());

@@ -32,10 +32,7 @@ public class StudentController {
         }
         return studentService.saveCourseStudent(coursestudent);
     }
-    @PostMapping("/findAllCoursesById")
-    public List<Course> findAllCoursesById(@RequestBody InputId inputId){
-        return studentService.findAllCoursesById(inputId);
-    }
+
     @GetMapping("/getAllCourses")
     public List<Course> getAllcourses(){
         return courseRepo.findAll();

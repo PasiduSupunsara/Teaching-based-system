@@ -4,9 +4,11 @@ import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.User;
 import com.example.Teaching_based_system.RequestDTO.InputId;
 import com.example.Teaching_based_system.RequestDTO.InputNameDTO;
+import com.example.Teaching_based_system.RequestDTO.NameDTO;
 import com.example.Teaching_based_system.RequestDTO.UpdateDTO;
 import com.example.Teaching_based_system.ResponseDTO.Out3DTO;
 import com.example.Teaching_based_system.ResponseDTO.ViewDTO;
+import com.example.Teaching_based_system.ResponseDTO.ViewUserDTO;
 import com.example.Teaching_based_system.Service.AdminService;
 import com.example.Teaching_based_system.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,29 +34,34 @@ public class AdminController {
         return userService.updateUser(updateDTO);
     }
     @GetMapping("/getAllUsers")
-    public List<ViewDTO> getAllUsers(){
+    public List<ViewUserDTO> getAllUsers(){
         return userService.getAllUsers();
     }
     @GetMapping("/getAllStudent")
-    public List<ViewDTO> getAllStudent(){
+    public List<ViewUserDTO> getAllStudent(){
         return userService.findAll("STUDENT");
     }
     @GetMapping("/getAllTeachers")
-    public List<ViewDTO> getAllTeachers(){
+    public List<ViewUserDTO> getAllTeachers(){
         return userService.findAll("TEACHER");
     }
     @GetMapping("/getAllAdmins")
-    public List<ViewDTO> getAllAdmins(){
+    public List<ViewUserDTO> getAllAdmins(){
         return userService.findAll("ADMIN");
     }
 
     @GetMapping("/getAllStudentForCourse")
-    public List<Out3DTO> findAllByCourseid(@RequestBody InputId inputId){
+    public List<ViewUserDTO> findAllByCourseid(@RequestBody InputId inputId){
         return adminService.findAllByCourseid(inputId);
     }
     @PostMapping("/saveCourse")
     public Course saveCourse(@RequestBody Course course){
         System.out.println(course);
         return adminService.saveCourse(course);
+    }
+
+    @PostMapping("/findAllCoursesById")
+    public List<Course> findAllCoursesById(@RequestBody NameDTO nameDTO){
+        return adminService.findAllCoursesById(nameDTO);
     }
 }

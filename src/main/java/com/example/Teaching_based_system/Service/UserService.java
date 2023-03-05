@@ -8,6 +8,7 @@ import com.example.Teaching_based_system.Entity.User;
 import com.example.Teaching_based_system.JWT.JwtTokenUtil;
 import com.example.Teaching_based_system.Repository.UserRepo;
 import com.example.Teaching_based_system.ResponseDTO.ViewDTO;
+import com.example.Teaching_based_system.ResponseDTO.ViewUserDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,12 +188,12 @@ public class UserService {
             return ResponseEntity.badRequest().body(responseDTO);
         }
     }
-    public List<ViewDTO> getAllUsers(){
+    public List<ViewUserDTO> getAllUsers(){
         List<User> userList = userRepo.findAll();
         return modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
         }.getType());
     }
-    public List<ViewDTO> findAll(String role){
+    public List<ViewUserDTO> findAll(String role){
         List<User> userList = userRepo.findAllStudent(role);
         return modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
         }.getType());
