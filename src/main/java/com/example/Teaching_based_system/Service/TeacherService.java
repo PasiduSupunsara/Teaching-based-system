@@ -1,12 +1,11 @@
 package com.example.Teaching_based_system.Service;
 
-import com.example.Teaching_based_system.Entity.Course;
-import com.example.Teaching_based_system.Entity.Courseteacher;
-import com.example.Teaching_based_system.Entity.MyTableId;
-import com.example.Teaching_based_system.Entity.TeacherPrimary;
+import com.example.Teaching_based_system.Entity.*;
+import com.example.Teaching_based_system.Repository.AssesmentRepo;
 import com.example.Teaching_based_system.Repository.CourseRepo;
 import com.example.Teaching_based_system.Repository.StudentCourseRepo;
 import com.example.Teaching_based_system.Repository.TeacherCourseRepo;
+import com.example.Teaching_based_system.RequestDTO.AssesmentDTO;
 import com.example.Teaching_based_system.RequestDTO.Input2;
 import com.example.Teaching_based_system.RequestDTO.Input3;
 import com.example.Teaching_based_system.RequestDTO.InputId;
@@ -25,6 +24,9 @@ public class TeacherService {
     private CourseRepo courseRepo;
     @Autowired
     private StudentCourseRepo studentCourseRepo;
+
+    @Autowired
+    private AssesmentRepo assesmentRepo;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -59,5 +61,9 @@ public class TeacherService {
 
     public List<ViewUserDTO> findAllByCourseid(InputId inputId){
         return courseRepo.findAllByCourseid(inputId.getId());
+    }
+
+    public void createNewAssesment(AssesmentDTO assesmentDTO){
+        assesmentRepo.save(modelMapper.map(assesmentDTO, Assesment.class));
     }
 }

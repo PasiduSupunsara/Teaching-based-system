@@ -22,4 +22,7 @@ public interface CourseRepo extends JpaRepository<Course,Integer> {
 
     @Query(value = "SELECT co.* from courseteacher ct join course co on ct.courseid = co.courseid where ct.tid = ?1",nativeQuery = true)
     List<Course> findAllCourseByIdforTeacher(int tid);
+
+    @Query(value = "SELECT co.* from courseteacher ct join course co on ct.courseid = co.courseid where ct.tid = ?1",nativeQuery = true)
+    List<Course> findAllCourseByTId(int tid);
 }

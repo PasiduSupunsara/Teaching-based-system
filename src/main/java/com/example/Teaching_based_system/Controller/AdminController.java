@@ -64,4 +64,9 @@ public class AdminController {
     public List<Course> findAllCoursesById(@RequestBody NameDTO nameDTO){
         return adminService.findAllCoursesById(nameDTO);
     }
+
+    @PostMapping("/findAllCoursesByTId")
+    public List<Course> findAllCoursesByTId(@RequestBody NameDTO nameDTO){
+        return adminService.findAllCoursesByTId(nameDTO);
+    }
 }

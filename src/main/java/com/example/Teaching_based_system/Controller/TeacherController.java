@@ -3,6 +3,7 @@ package com.example.Teaching_based_system.Controller;
 import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Courseteacher;
 import com.example.Teaching_based_system.Repository.CourseRepo;
+import com.example.Teaching_based_system.RequestDTO.AssesmentDTO;
 import com.example.Teaching_based_system.RequestDTO.Input2;
 import com.example.Teaching_based_system.RequestDTO.Input3;
 import com.example.Teaching_based_system.RequestDTO.InputId;
@@ -63,10 +64,12 @@ public class TeacherController {
         return teacherService.CountCourseStudent(input3);
     }
 
-    @PostMapping("/getAllStudentForCourse")
-    public List<ViewUserDTO> findAllByCourseid(@RequestBody InputId inputId){
-        return teacherService.findAllByCourseid(inputId);
+    @PostMapping("/CreateNewAssesment")
+    public void createNewAssesment(@RequestBody AssesmentDTO assesmentDTO){
+        teacherService.createNewAssesment(assesmentDTO);
     }
+
+
 
 
 }

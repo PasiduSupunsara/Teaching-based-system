@@ -1,6 +1,8 @@
 package com.example.Teaching_based_system.Service;
 
+import com.example.Teaching_based_system.Entity.Assesment;
 import com.example.Teaching_based_system.Exception.*;
+import com.example.Teaching_based_system.Repository.AssesmentRepo;
 import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.ResponseDTO.ResponseDTO;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
@@ -32,6 +34,8 @@ import java.util.regex.Pattern;
 public class UserService {
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private AssesmentRepo assesmentRepo;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -197,6 +201,10 @@ public class UserService {
         List<User> userList = userRepo.findAllStudent(role);
         return modelMapper.map(userList,new TypeToken<ArrayList<ViewDTO>>(){
         }.getType());
+    }
+
+    public List<Assesment> getAllAssesmentByCid(InputId inputId){
+        return assesmentRepo.getAllAssesmentByCid(inputId.getId());
     }
 
 

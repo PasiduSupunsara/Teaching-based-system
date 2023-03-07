@@ -1,11 +1,9 @@
 package com.example.Teaching_based_system.Controller;
 
+import com.example.Teaching_based_system.Entity.Assesment;
 import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.RequestDTO.*;
-import com.example.Teaching_based_system.ResponseDTO.Out1DTO;
-import com.example.Teaching_based_system.ResponseDTO.Out2DTO;
-import com.example.Teaching_based_system.ResponseDTO.OutDTO;
-import com.example.Teaching_based_system.ResponseDTO.ViewDTO;
+import com.example.Teaching_based_system.ResponseDTO.*;
 import com.example.Teaching_based_system.Service.AdminService;
 import com.example.Teaching_based_system.Service.StudentService;
 import com.example.Teaching_based_system.Service.TeacherService;
@@ -65,4 +63,12 @@ public class AuthController {
         return adminService.getAllcourses();
     }
 
+    @PostMapping("/getAllStudentForCourse")
+    public List<ViewUserDTO> findAllByCourseid(@RequestBody InputId inputId){
+        return teacherService.findAllByCourseid(inputId);
+    }
+    @PostMapping("/getAllAssesmentByCid")
+    public List<Assesment> getAllAssesmentByCid(@RequestBody InputId inputId){
+        return userService.getAllAssesmentByCid(inputId);
+    }
 }

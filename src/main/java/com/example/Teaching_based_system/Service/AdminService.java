@@ -44,4 +44,9 @@ public class AdminService {
         User user = userRepo.findByName(nameDTO.getName());
         return courseRepo.findAllCourseById(user.getId());
     }
+
+    public  List<Course> findAllCoursesByTId(NameDTO nameDTO){
+        User user = userRepo.findByName(nameDTO.getName());
+        return courseRepo.findAllCourseByTId(user.getId());
+    }
 }
