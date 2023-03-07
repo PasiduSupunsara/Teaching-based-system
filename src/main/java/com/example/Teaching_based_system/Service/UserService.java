@@ -3,6 +3,8 @@ package com.example.Teaching_based_system.Service;
 import com.example.Teaching_based_system.Entity.Assesment;
 import com.example.Teaching_based_system.Exception.*;
 import com.example.Teaching_based_system.Repository.AssesmentRepo;
+import com.example.Teaching_based_system.Repository.StudentCourseRepo;
+import com.example.Teaching_based_system.Repository.TeacherCourseRepo;
 import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.ResponseDTO.ResponseDTO;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
@@ -43,6 +45,12 @@ public class UserService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private StudentCourseRepo studentCourseRepo;
+
+    @Autowired
+    private TeacherCourseRepo teacherCourseRepo;
 
     public RegisterDTO getDetail(String name){
         User user = userRepo.findByName(name);
@@ -203,9 +211,15 @@ public class UserService {
         }.getType());
     }
 
-    public List<Assesment> getAllAssesmentByCid(InputId inputId){
-        return assesmentRepo.getAllAssesmentByCid(inputId.getId());
+    public List<Assesment> getAllAssesmentByCid(InputIDwithPriDTO inputIDwithPriDTO){
+        int pid = inputIDwithPriDTO.getPrincipalid();
+        int cid = inputIDwithPriDTO.getId();
+        if ((studentCourseRepo.CountCourseStudent(pid,cid) == 1) || (teacherCourseRepo.CountCourseTeacher(pid,cid) == 1)){
+            return assesmentRepo.getAllAssesmentByCid(cid);
+        }
+        else{
+            return null;
+        }
     }
-
 
 }

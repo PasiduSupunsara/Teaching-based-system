@@ -68,7 +68,7 @@ public class AuthController {
         return teacherService.findAllByCourseid(inputId);
     }
     @PostMapping("/getAllAssesmentByCid")
-    public List<Assesment> getAllAssesmentByCid(@RequestBody InputId inputId){
-        return userService.getAllAssesmentByCid(inputId);
+    public List<Assesment> getAllAssesmentByCid(@RequestBody InputIDwithPriDTO inputIDwithPriDTO){
+        return userService.getAllAssesmentByCid(inputIDwithPriDTO);
     }
 }
