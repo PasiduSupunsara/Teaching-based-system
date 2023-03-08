@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.HttpServerErrorException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -220,6 +221,9 @@ public class UserService {
         else{
             return null;
         }
+    }
+    public List<Assesment> getTimeLine(){
+        return assesmentRepo.getTimeLine(LocalDate.now().plusWeeks(1),LocalDate.now());
     }
 
 }

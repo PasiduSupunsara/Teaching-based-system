@@ -2,6 +2,7 @@ package com.example.Teaching_based_system.Controller;
 
 import com.example.Teaching_based_system.Entity.Assesment;
 import com.example.Teaching_based_system.Entity.Course;
+import com.example.Teaching_based_system.Repository.AssesmentRepo;
 import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.ResponseDTO.*;
 import com.example.Teaching_based_system.Service.AdminService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -29,6 +31,9 @@ public class AuthController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private AssesmentRepo assesmentRepo;
 
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody RegisterDTO registerDTO){
@@ -70,5 +75,9 @@ public class AuthController {
     @PostMapping("/getAllAssesmentByCid")
     public List<Assesment> getAllAssesmentByCid(@RequestBody InputIDwithPriDTO inputIDwithPriDTO){
         return userService.getAllAssesmentByCid(inputIDwithPriDTO);
+    }
+    @GetMapping("/hello")
+    public List<Assesment> getTimeLine(){
+        return userService.getTimeLine();
     }
 }
