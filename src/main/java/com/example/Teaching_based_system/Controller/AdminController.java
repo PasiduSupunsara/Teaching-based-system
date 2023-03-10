@@ -66,5 +66,9 @@ public class AdminController {
     public List<Course> findAllCoursesByTId(@RequestBody NameDTO nameDTO){
         return adminService.findAllCoursesByTId(nameDTO);
     }
+    @PostMapping("/putMessageByRole")
+    public void putMessageTeachers(@RequestBody MessageDTO messageDTO){
+        adminService.putMessageTeachers(messageDTO);
+    }
 
 }

@@ -100,5 +100,4 @@ public class AuthController {
     public int update(@RequestBody InputId inputId){
        return userService.getstatus(inputId.getId());
     }
-
 }

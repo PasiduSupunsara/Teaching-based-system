@@ -59,7 +59,18 @@ public class AdminService {
         Message message1 = modelMapper.map(messageDTO, Message.class);
         User user = userRepo.findByName(messageDTO.getName());
         message1.setRid(user.getId());
-        System.out.println(message1);
         messagerepo.save(message1);
+    }
+
+    public void putMessageTeachers(MessageDTO messageDTO) {
+        Message message1 = modelMapper.map(messageDTO, Message.class);
+        String role = messageDTO.getName();
+        List<Integer> ids = userRepo.findAllIdByRole(role);
+        for(int id:ids){
+            message1.setRid(id);
+            int lastMid = (int)messagerepo.count();
+            message1.setMid(lastMid + 1);
+            messagerepo.save(message1);
+        }
     }
 }
