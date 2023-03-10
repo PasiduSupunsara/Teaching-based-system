@@ -86,4 +86,19 @@ public class AuthController {
         return userService.getmessage(inputId);
     }
 
+    @PostMapping("/countMessages")
+    public int CountByRid(@RequestBody InputId inputId){
+        return userService.CountByRid(inputId);
+    }
+
+    @PutMapping("/updateStatus")
+    public void update(@RequestBody StatusUpdateDTO statusUpdateDTO){
+        userService.updateMessageStatus(statusUpdateDTO);
+    }
+
+    @PostMapping("/getstatus")
+    public int update(@RequestBody InputId inputId){
+       return userService.getstatus(inputId.getId());
+    }
+
 }

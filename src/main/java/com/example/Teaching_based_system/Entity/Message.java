@@ -21,5 +21,7 @@ public class Message {
     private int rid;
     @Column(nullable = false)
     private String message;
+    @Column(nullable = false)
+    private int status;
 
 }

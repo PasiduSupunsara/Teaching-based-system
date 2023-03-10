@@ -233,5 +233,16 @@ public class UserService {
     public List<Message> getmessage(InputId inputId){
        return messagerepo.findAllByRid(inputId.getId());
     }
+    public int CountByRid(InputId inputId){
+        return messagerepo.CountByRid(inputId.getId());
+    }
+    public void updateMessageStatus(StatusUpdateDTO statusUpdateDTO){
+        Message message = messagerepo.getReferenceById(statusUpdateDTO.getMid());
+        message.setStatus(statusUpdateDTO.getCount());
+        messagerepo.save(message);
+    }
+    public int getstatus(int mid){
+        return messagerepo.getstatus(mid);
+    }
 
 }
