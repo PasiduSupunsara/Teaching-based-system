@@ -15,7 +15,10 @@ public interface AssesmentRepo extends JpaRepository<Assesment,Integer> {
     @Query(value = "select * from assesment where cid = ?1",nativeQuery = true)
     List<Assesment> getAllAssesmentByCid(int cid);
 
-    @Query(value = "select * from assesment where duedate <= ?1 and duedate >= ?2",nativeQuery = true)
-    List<Assesment> getTimeLine(LocalDate date1,LocalDate date2);
+    @Query(value = "SELECT ass.* from assesment ass join coursestudent cs on cs.courseid = ass.cid where ass.duedate <= ?1 and ass.duedate >= ?2 and cs.sid = ?3",nativeQuery = true)
+    List<Assesment> getTimeLine(LocalDate date1,LocalDate date2,int sid);
+
+    @Query(value = "SELECT ass.* from assesment ass join courseteacher ct on ct.courseid = ass.cid where ass.duedate <= ?1 and ass.duedate >= ?2 and ct.tid = ?3",nativeQuery = true)
+    List<Assesment> getTimeLineForTeacher(LocalDate date1,LocalDate date2,int tid);
 
 }

@@ -1,5 +1,6 @@
 package com.example.Teaching_based_system.Controller;
 
+import com.example.Teaching_based_system.Entity.Assesment;
 import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Courseteacher;
 import com.example.Teaching_based_system.Repository.CourseRepo;
@@ -67,6 +68,10 @@ public class TeacherController {
     @PostMapping("/CreateNewAssesment")
     public void createNewAssesment(@RequestBody AssesmentDTO assesmentDTO){
         teacherService.createNewAssesment(assesmentDTO);
+    }
+    @PostMapping("/getTimeLine")
+    public List<Assesment> getTimeLine(@RequestBody InputId inputId){
+        return userService.getTimeLineForTeacher(inputId);
     }
 
 

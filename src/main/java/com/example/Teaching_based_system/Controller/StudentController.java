@@ -1,5 +1,6 @@
 package com.example.Teaching_based_system.Controller;
 
+import com.example.Teaching_based_system.Entity.Assesment;
 import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Coursestudent;
 import com.example.Teaching_based_system.Repository.CourseRepo;
@@ -8,6 +9,7 @@ import com.example.Teaching_based_system.RequestDTO.Input2;
 import com.example.Teaching_based_system.RequestDTO.InputId;
 import com.example.Teaching_based_system.RequestDTO.NameDTO;
 import com.example.Teaching_based_system.Service.StudentService;
+import com.example.Teaching_based_system.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +24,8 @@ public class StudentController {
     private StudentService studentService;
     @Autowired
     private CourseRepo courseRepo;
-
+    @Autowired
+    private UserService userService;
     @Autowired
     private StudentCourseRepo studentCourseRepo;
     @PostMapping("/mapStudentCourse")
@@ -52,7 +55,10 @@ public class StudentController {
         studentService.deleteMapping(input2);
     }
 
-
+    @PostMapping("/getTimeLine")
+    public List<Assesment> getTimeLine(@RequestBody InputId inputId){
+        return userService.getTimeLine(inputId);
+    }
 
 
 

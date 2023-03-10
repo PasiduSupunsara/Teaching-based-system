@@ -1,16 +1,14 @@
 package com.example.Teaching_based_system.Service;
 
 import com.example.Teaching_based_system.Entity.Assesment;
+import com.example.Teaching_based_system.Entity.Message;
 import com.example.Teaching_based_system.Exception.*;
-import com.example.Teaching_based_system.Repository.AssesmentRepo;
-import com.example.Teaching_based_system.Repository.StudentCourseRepo;
-import com.example.Teaching_based_system.Repository.TeacherCourseRepo;
+import com.example.Teaching_based_system.Repository.*;
 import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.ResponseDTO.ResponseDTO;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
 import com.example.Teaching_based_system.Entity.User;
 import com.example.Teaching_based_system.JWT.JwtTokenUtil;
-import com.example.Teaching_based_system.Repository.UserRepo;
 import com.example.Teaching_based_system.ResponseDTO.ViewDTO;
 import com.example.Teaching_based_system.ResponseDTO.ViewUserDTO;
 import org.modelmapper.ModelMapper;
@@ -52,6 +50,8 @@ public class UserService {
 
     @Autowired
     private TeacherCourseRepo teacherCourseRepo;
+    @Autowired
+    private Messagerepo messagerepo;
 
     public RegisterDTO getDetail(String name){
         User user = userRepo.findByName(name);
@@ -222,8 +222,16 @@ public class UserService {
             return null;
         }
     }
-    public List<Assesment> getTimeLine(){
-        return assesmentRepo.getTimeLine(LocalDate.now().plusWeeks(1),LocalDate.now());
+    public List<Assesment> getTimeLine(InputId inputId){
+        return assesmentRepo.getTimeLine(LocalDate.now().plusWeeks(1),LocalDate.now(),inputId.getId());
+    }
+
+    public List<Assesment> getTimeLineForTeacher(InputId inputId){
+        return assesmentRepo.getTimeLineForTeacher(LocalDate.now().plusWeeks(1),LocalDate.now(),inputId.getId());
+    }
+
+    public List<Message> getmessage(InputId inputId){
+       return messagerepo.findAllByRid(inputId.getId());
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.Teaching_based_system.Controller;
 
 import com.example.Teaching_based_system.Entity.Assesment;
 import com.example.Teaching_based_system.Entity.Course;
+import com.example.Teaching_based_system.Entity.Message;
 import com.example.Teaching_based_system.Repository.AssesmentRepo;
 import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.ResponseDTO.*;
@@ -76,8 +77,13 @@ public class AuthController {
     public List<Assesment> getAllAssesmentByCid(@RequestBody InputIDwithPriDTO inputIDwithPriDTO){
         return userService.getAllAssesmentByCid(inputIDwithPriDTO);
     }
-    @GetMapping("/hello")
-    public List<Assesment> getTimeLine(){
-        return userService.getTimeLine();
+    @PostMapping("/putMessage")
+    public void putMessage(@RequestBody MessageDTO messageDTO){
+        adminService.putMessage(messageDTO);
     }
+    @PostMapping("/getMessages")
+    public List<Message> getmessage(@RequestBody InputId inputId){
+        return userService.getmessage(inputId);
+    }
+
 }
