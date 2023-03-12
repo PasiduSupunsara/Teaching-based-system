@@ -2,8 +2,10 @@ package com.example.Teaching_based_system.Controller;
 
 import com.example.Teaching_based_system.Entity.Assesment;
 import com.example.Teaching_based_system.Entity.Course;
+import com.example.Teaching_based_system.Entity.File;
 import com.example.Teaching_based_system.Entity.Message;
 import com.example.Teaching_based_system.Repository.AssesmentRepo;
+import com.example.Teaching_based_system.Repository.FileRepo;
 import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.ResponseDTO.*;
 import com.example.Teaching_based_system.Service.AdminService;
@@ -11,9 +13,12 @@ import com.example.Teaching_based_system.Service.StudentService;
 import com.example.Teaching_based_system.Service.TeacherService;
 import com.example.Teaching_based_system.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -32,6 +37,8 @@ public class AuthController {
 
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private FileRepo fileRepo;
 
     @Autowired
     private AssesmentRepo assesmentRepo;
@@ -100,4 +107,29 @@ public class AuthController {
     public void update(@RequestBody Message1DTO message1DTO){
          userService.putMessageCourse(message1DTO);
     }
+    @PostMapping("/upload")
+    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file,@RequestParam("assid") int assid, @RequestParam("sid") int sid,@RequestParam("cid") int cid) {
+        System.out.println(file);
+        try {
+            // Create a new file entity
+            File file1 = new File();
+            file1.setFilename(file.getOriginalFilename());
+            file1.setContentType(file.getContentType());
+            file1.setData(file.getBytes());
+            file1.setAssid(assid);
+            file1.setSid(sid);
+            file1.setCid(cid);
+
+
+            // Save the file entity to the database
+            file1 = fileRepo.save(file1);
+
+            // Return a success response
+            return ResponseEntity.ok("File uploaded successfully with ID " + file1.getId());
+        } catch (IOException e) {
+            // Handle file save error
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("File upload failed: " + e.getMessage());
+        }
+    }
+
 }
