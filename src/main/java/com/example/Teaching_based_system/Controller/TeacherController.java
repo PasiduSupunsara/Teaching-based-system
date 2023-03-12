@@ -4,10 +4,7 @@ import com.example.Teaching_based_system.Entity.Assesment;
 import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Courseteacher;
 import com.example.Teaching_based_system.Repository.CourseRepo;
-import com.example.Teaching_based_system.RequestDTO.AssesmentDTO;
-import com.example.Teaching_based_system.RequestDTO.Input2;
-import com.example.Teaching_based_system.RequestDTO.Input3;
-import com.example.Teaching_based_system.RequestDTO.InputId;
+import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.ResponseDTO.Out3DTO;
 import com.example.Teaching_based_system.ResponseDTO.ViewDTO;
 import com.example.Teaching_based_system.ResponseDTO.ViewUserDTO;
@@ -72,6 +69,10 @@ public class TeacherController {
     @PostMapping("/getTimeLine")
     public List<Assesment> getTimeLine(@RequestBody InputId inputId){
         return userService.getTimeLineForTeacher(inputId);
+    }
+    @PostMapping("/putMessage")
+    public void putMessage(@RequestBody MessageDTO messageDTO){
+        teacherService.putMessage(messageDTO);
     }
 
 

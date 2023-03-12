@@ -5,9 +5,7 @@ import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Coursestudent;
 import com.example.Teaching_based_system.Repository.CourseRepo;
 import com.example.Teaching_based_system.Repository.StudentCourseRepo;
-import com.example.Teaching_based_system.RequestDTO.Input2;
-import com.example.Teaching_based_system.RequestDTO.InputId;
-import com.example.Teaching_based_system.RequestDTO.NameDTO;
+import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.Service.StudentService;
 import com.example.Teaching_based_system.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +58,10 @@ public class StudentController {
         return userService.getTimeLine(inputId);
     }
 
-
+    @PostMapping("/putMessage")
+    public void putMessage(@RequestBody Message2DTO message2DTO){
+        System.out.println(message2DTO);
+        studentService.putMessage(message2DTO);
+    }
 
 }

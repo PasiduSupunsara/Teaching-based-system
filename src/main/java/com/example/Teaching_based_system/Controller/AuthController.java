@@ -77,10 +77,6 @@ public class AuthController {
     public List<Assesment> getAllAssesmentByCid(@RequestBody InputIDwithPriDTO inputIDwithPriDTO){
         return userService.getAllAssesmentByCid(inputIDwithPriDTO);
     }
-    @PostMapping("/putMessage")
-    public void putMessage(@RequestBody MessageDTO messageDTO){
-        adminService.putMessage(messageDTO);
-    }
     @PostMapping("/getMessages")
     public List<Message> getmessage(@RequestBody InputId inputId){
         return userService.getmessage(inputId);
@@ -99,5 +95,9 @@ public class AuthController {
     @PostMapping("/getstatus")
     public int update(@RequestBody InputId inputId){
        return userService.getstatus(inputId.getId());
+    }
+    @PostMapping("/putMessageCourse")
+    public void update(@RequestBody Message1DTO message1DTO){
+         userService.putMessageCourse(message1DTO);
     }
 }

@@ -1,15 +1,10 @@
 package com.example.Teaching_based_system.Service;
 
-import com.example.Teaching_based_system.Entity.Course;
-import com.example.Teaching_based_system.Entity.Coursestudent;
-import com.example.Teaching_based_system.Entity.MyTableId;
-import com.example.Teaching_based_system.Entity.User;
-import com.example.Teaching_based_system.Repository.CourseRepo;
-import com.example.Teaching_based_system.Repository.StudentCourseRepo;
-import com.example.Teaching_based_system.Repository.UserRepo;
+import com.example.Teaching_based_system.Entity.*;
+import com.example.Teaching_based_system.Repository.*;
 import com.example.Teaching_based_system.RequestDTO.Input2;
 import com.example.Teaching_based_system.RequestDTO.InputId;
-import com.example.Teaching_based_system.RequestDTO.NameDTO;
+import com.example.Teaching_based_system.RequestDTO.Message2DTO;
 import com.example.Teaching_based_system.ResponseDTO.OutDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +18,16 @@ public class StudentService {
     @Autowired
     private StudentCourseRepo studentCourseRepo;
     @Autowired
+    private Messagerepo messagerepo;
+    @Autowired
     private CourseRepo courseRepo;
 
     @Autowired
     private UserRepo userRepo;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private TeacherCourseRepo teacherCourseRepo;
 
     public Coursestudent saveCourseStudent(Coursestudent coursestudent){
         return studentCourseRepo.save(coursestudent);
@@ -51,6 +50,18 @@ public class StudentService {
 
     public Course findByCourseId(InputId inputId){
         return courseRepo.findCourseDetailsByCourseid(inputId.getId());
+    }
+    public void putMessage(Message2DTO messageDTO){
+        Message message1 = modelMapper.map(messageDTO, Message.class);
+        int cid = messageDTO.getCid();
+        List<Integer> ids = teacherCourseRepo.teacherByCourseId(cid);
+        for(int id:ids){
+            message1.setRid(id);
+            int lastMid = (int)messagerepo.count();
+            message1.setMid(lastMid + 1);
+            System.out.println(message1);
+            messagerepo.save(message1);
+        }
     }
 }
 

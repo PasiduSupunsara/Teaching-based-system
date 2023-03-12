@@ -1,14 +1,8 @@
 package com.example.Teaching_based_system.Service;
 
 import com.example.Teaching_based_system.Entity.*;
-import com.example.Teaching_based_system.Repository.AssesmentRepo;
-import com.example.Teaching_based_system.Repository.CourseRepo;
-import com.example.Teaching_based_system.Repository.StudentCourseRepo;
-import com.example.Teaching_based_system.Repository.TeacherCourseRepo;
-import com.example.Teaching_based_system.RequestDTO.AssesmentDTO;
-import com.example.Teaching_based_system.RequestDTO.Input2;
-import com.example.Teaching_based_system.RequestDTO.Input3;
-import com.example.Teaching_based_system.RequestDTO.InputId;
+import com.example.Teaching_based_system.Repository.*;
+import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.ResponseDTO.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +21,10 @@ public class TeacherService {
 
     @Autowired
     private AssesmentRepo assesmentRepo;
+    @Autowired
+    private Messagerepo messagerepo;
+    @Autowired
+    private UserRepo userRepo;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -65,5 +63,13 @@ public class TeacherService {
 
     public void createNewAssesment(AssesmentDTO assesmentDTO){
         assesmentRepo.save(modelMapper.map(assesmentDTO, Assesment.class));
+    }
+    public void putMessage(MessageDTO messageDTO){
+        Message message1 = modelMapper.map(messageDTO, Message.class);
+        int lastMid = (int)messagerepo.count();
+        message1.setMid(lastMid + 1);
+        User user = userRepo.findByName(messageDTO.getName());
+        message1.setRid(user.getId());
+        messagerepo.save(message1);
     }
 }

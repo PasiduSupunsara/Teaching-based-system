@@ -244,5 +244,47 @@ public class UserService {
     public int getstatus(int mid){
         return messagerepo.getstatus(mid);
     }
-
+    public void putMessageCourse(Message1DTO message1DTO){
+        int cid = message1DTO.getCid();
+        if(message1DTO.getSender().equals("USERS")){
+            List<Integer> ids = studentCourseRepo.studentByCourseId(cid);
+            Message message1 = modelMapper.map(message1DTO, Message.class);
+            for(int id:ids) {
+                message1.setRid(id);
+                int lastMid = (int) messagerepo.count();
+                message1.setMid(lastMid + 1);
+                System.out.println(message1);
+                messagerepo.save(message1);
+            }
+            List<Integer> ids1 = teacherCourseRepo.teacherByCourseId(cid);
+            Message message2 = modelMapper.map(message1DTO, Message.class);
+            for(int id:ids1) {
+                message2.setRid(id);
+                int lastMid = (int) messagerepo.count();
+                message2.setMid(lastMid + 1);
+                messagerepo.save(message2);
+            }
+        }
+        else if(message1DTO.getSender().equals("STUDENTS")){
+            List<Integer> ids = studentCourseRepo.studentByCourseId(cid);
+            Message message1 = modelMapper.map(message1DTO, Message.class);
+            for(int id:ids) {
+                message1.setRid(id);
+                int lastMid = (int) messagerepo.count();
+                message1.setMid(lastMid + 1);
+                System.out.println(message1);
+                messagerepo.save(message1);
+            }
+        }
+        else if(message1DTO.getSender().equals("TEACHERS")){
+            List<Integer> ids = teacherCourseRepo.teacherByCourseId(cid);
+            Message message1 = modelMapper.map(message1DTO, Message.class);
+            for(int id:ids) {
+                message1.setRid(id);
+                int lastMid = (int) messagerepo.count();
+                message1.setMid(lastMid + 1);
+                messagerepo.save(message1);
+            }
+        }
+    }
 }

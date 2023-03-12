@@ -27,6 +27,8 @@ public interface TeacherCourseRepo extends JpaRepository<Courseteacher, TeacherP
     @Query(value = "SELECT COUNT(*) FROM courseteacher WHERE tid =?1 AND courseid = ?2 ",nativeQuery = true)
     int CountCourseTeacher(int tid,int courseid);
 
+    @Query(value = "select tid from courseteacher where courseid = ?1",nativeQuery = true)
+    List<Integer> teacherByCourseId(int courseid);
 
 
 
