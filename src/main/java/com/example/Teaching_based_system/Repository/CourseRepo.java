@@ -11,6 +11,10 @@ import java.util.List;
 
 @Repository
 public interface CourseRepo extends JpaRepository<Course,Integer> {
+
+    Course findByCourseid(int courseid);
+    @Query(value = "SELECT * from course where state = ?1",nativeQuery = true)
+    List<Course> findAllCourseForRegister(int state);
     @Query(value = "SELECT u.* from  coursestudent cs join user u on cs.sid = u.id where cs.courseid = ?1",nativeQuery = true)
     List<ViewUserDTO> findAllByCourseid(int courseid);
 

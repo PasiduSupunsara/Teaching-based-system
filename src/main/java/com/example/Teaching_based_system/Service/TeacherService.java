@@ -18,17 +18,19 @@ public class TeacherService {
     private CourseRepo courseRepo;
     @Autowired
     private StudentCourseRepo studentCourseRepo;
-
     @Autowired
     private AssesmentRepo assesmentRepo;
     @Autowired
     private Messagerepo messagerepo;
     @Autowired
     private UserRepo userRepo;
-
     @Autowired
     private ModelMapper modelMapper;
     public Courseteacher saveCourseTeacher(Courseteacher courseteacher){
+        int courseId = (courseteacher.getId()).getCourseid();
+        Course course = courseRepo.findByCourseid(courseId);
+        course.setState(1);
+        courseRepo.save(course);
         return teacherCourseRepo.save(courseteacher);
     }
     public List<OutDTO> findCourseNameByUserIdForTeacher(){
@@ -50,6 +52,10 @@ public class TeacherService {
     }
 
     public void deleteMapping(Input3 input3){
+        int courseId = input3.getCourseid();
+        Course course = courseRepo.findByCourseid(courseId);
+        course.setState(0);
+        courseRepo.save(course);
         teacherCourseRepo.deleteById(modelMapper.map(input3, TeacherPrimary.class));
     }
 
@@ -71,5 +77,8 @@ public class TeacherService {
         User user = userRepo.findByName(messageDTO.getName());
         message1.setRid(user.getId());
         messagerepo.save(message1);
+    }
+    public List<Course> findAllCourse(){
+        return courseRepo.findAll();
     }
 }
