@@ -50,7 +50,7 @@ public class TeacherController {
     }
     @GetMapping("/getAllCourses")
     public List<Course> getAllcourses(){
-        return courseRepo.findAll();
+        return teacherService.findAllCourse();
     }
 
     @DeleteMapping("/deleteMappingteachercourse")
