@@ -41,7 +41,7 @@ public class StudentController {
 
     @GetMapping("/getAllCourses")
     public List<Course> getAllcourses(){
-        return courseRepo.findAll();
+        return studentService.findAllCourse();
     }
 
     @PostMapping("/CountCourseStudent")
