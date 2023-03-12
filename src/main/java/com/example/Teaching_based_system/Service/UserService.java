@@ -5,6 +5,7 @@ import com.example.Teaching_based_system.Entity.Message;
 import com.example.Teaching_based_system.Exception.*;
 import com.example.Teaching_based_system.Repository.*;
 import com.example.Teaching_based_system.RequestDTO.*;
+import com.example.Teaching_based_system.ResponseDTO.NotificationDTO;
 import com.example.Teaching_based_system.ResponseDTO.ResponseDTO;
 import com.example.Teaching_based_system.Configuration.UserPrincipal;
 import com.example.Teaching_based_system.Entity.User;
@@ -230,8 +231,17 @@ public class UserService {
         return assesmentRepo.getTimeLineForTeacher(LocalDate.now().plusWeeks(1),LocalDate.now(),inputId.getId());
     }
 
-    public List<Message> getmessage(InputId inputId){
-       return messagerepo.findAllByRid(inputId.getId());
+    public List<NotificationDTO> getmessage(InputId inputId){
+        List<Message> messages = messagerepo.findAllByRid(inputId.getId());
+        List<NotificationDTO> notifications = new ArrayList<NotificationDTO>();
+        for(Message message:messages){
+            NotificationDTO notification = modelMapper.map(message, NotificationDTO.class);
+            int sid = message.getSid();
+            String sname = (userRepo.findById(sid)).getName();
+            notification.setSname(sname);
+            notifications.add(notification);
+        }
+       return notifications;
     }
     public int CountByRid(InputId inputId){
         return messagerepo.CountByRid(inputId.getId());
@@ -253,7 +263,6 @@ public class UserService {
                 message1.setRid(id);
                 int lastMid = (int) messagerepo.count();
                 message1.setMid(lastMid + 1);
-                System.out.println(message1);
                 messagerepo.save(message1);
             }
             List<Integer> ids1 = teacherCourseRepo.teacherByCourseId(cid);
@@ -272,7 +281,6 @@ public class UserService {
                 message1.setRid(id);
                 int lastMid = (int) messagerepo.count();
                 message1.setMid(lastMid + 1);
-                System.out.println(message1);
                 messagerepo.save(message1);
             }
         }

@@ -62,9 +62,7 @@ public class AdminService {
     public void putMessageRole(MessageDTO messageDTO) {
         Message message1 = modelMapper.map(messageDTO, Message.class);
         String role = messageDTO.getName();
-        System.out.println(role);
         if (role.equals("USERS")){
-            System.out.println(1);
             List<String> roles = new ArrayList<String>();
             roles.add("STUDENT");
             roles.add("TEACHER");

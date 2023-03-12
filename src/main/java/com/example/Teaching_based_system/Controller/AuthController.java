@@ -78,7 +78,7 @@ public class AuthController {
         return userService.getAllAssesmentByCid(inputIDwithPriDTO);
     }
     @PostMapping("/getMessages")
-    public List<Message> getmessage(@RequestBody InputId inputId){
+    public List<NotificationDTO> getmessage(@RequestBody InputId inputId){
         return userService.getmessage(inputId);
     }
 
