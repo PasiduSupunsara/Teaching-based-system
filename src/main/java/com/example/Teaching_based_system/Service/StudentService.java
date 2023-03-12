@@ -63,5 +63,8 @@ public class StudentService {
             messagerepo.save(message1);
         }
     }
+    public List<Course> findAllCourse(){
+        return courseRepo.findAllCourseForRegister(1);
+    }
 }
 
