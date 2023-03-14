@@ -54,29 +54,33 @@ public class UserService {
     @Autowired
     private Messagerepo messagerepo;
 
+
+
     public RegisterDTO getDetail(String name){
         User user = userRepo.findByName(name);
         return modelMapper.map(user, RegisterDTO.class);
     }
 
-
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO){
         try{
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDTO.getName(), loginDTO.getPassword())
-            );
-            UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
-            String token = jwtTokenUtil.generateToken(loginDTO.getName(),getDetail(loginDTO.getName()).getRole());
-            String refreshToken = jwtTokenUtil.generateRefreshToken(loginDTO.getName(),getDetail(loginDTO.getName()).getRole());
-            ResponseDTO responseDTO = new ResponseDTO(token,refreshToken,null,null,getDetail(loginDTO.getName()).getRole(),getDetail(loginDTO.getName()).getId());
-            return ResponseEntity.ok(responseDTO);
-        }
-        catch (BadCredentialsException ex){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        catch (HttpServerErrorException.InternalServerError ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(loginDTO.getName(), loginDTO.getPassword())
+                );
+                UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
+                String token = jwtTokenUtil.generateToken(loginDTO.getName(),getDetail(loginDTO.getName()).getRole());
+                String refreshToken = jwtTokenUtil.generateRefreshToken(loginDTO.getName(),getDetail(loginDTO.getName()).getRole());
+                ResponseDTO responseDTO = new ResponseDTO(token,refreshToken,null,null,getDetail(loginDTO.getName()).getRole(),getDetail(loginDTO.getName()).getId());
+                return ResponseEntity.ok(responseDTO);
+            }
+            catch (BadCredentialsException ex){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            catch (HttpServerErrorException.InternalServerError ex) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+
+
+
 
     }
     public static boolean isValidPassword(String password) {
@@ -294,5 +298,10 @@ public class UserService {
                 messagerepo.save(message1);
             }
         }
+    }
+
+    public ResponseEntity logout(LogoutDTO logoutDTO) {
+
+        return ResponseEntity.ok(null);
     }
 }

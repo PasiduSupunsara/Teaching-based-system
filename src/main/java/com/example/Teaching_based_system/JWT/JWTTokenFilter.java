@@ -1,8 +1,11 @@
 package com.example.Teaching_based_system.JWT;
 
 
+import com.example.Teaching_based_system.Service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.NestedServletException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -31,7 +35,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class JWTTokenFilter extends OncePerRequestFilter {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
-
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -66,6 +69,23 @@ public class JWTTokenFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
 
+        }
+        catch(NestedServletException e){
+            response.setHeader("error","jwt error");
+            response.setStatus(FORBIDDEN.value());
+            //response.sendError(FORBIDDEN.value());
+            Map<String,String> error=new HashMap<>();
+            error.put("errorMessage",e.getMessage());
+            response.setContentType(APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(),error);
+        }
+        catch(ExpiredJwtException e){
+            response.setHeader("error","jwt error");
+            response.setStatus(401);
+            Map<String,String> error=new HashMap<>();
+            error.put("errorMessage",e.getMessage());
+            response.setContentType(APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(),error);
         }
         catch(Exception e){
             e.printStackTrace();

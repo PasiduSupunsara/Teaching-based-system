@@ -4,6 +4,7 @@ import com.example.Teaching_based_system.Entity.Assesment;
 import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Courseteacher;
 import com.example.Teaching_based_system.Repository.CourseRepo;
+import com.example.Teaching_based_system.Repository.FileRepo;
 import com.example.Teaching_based_system.RequestDTO.*;
 import com.example.Teaching_based_system.ResponseDTO.Out3DTO;
 import com.example.Teaching_based_system.ResponseDTO.ViewDTO;
@@ -30,6 +31,9 @@ public class TeacherController {
 
     @Autowired
     private CourseRepo courseRepo;
+
+    @Autowired
+    private FileRepo fileRepo;
 
     @GetMapping("/getAllStudent")
     public List<ViewUserDTO> getAllStudent(){
@@ -73,6 +77,11 @@ public class TeacherController {
     @PostMapping("/putMessage")
     public void putMessage(@RequestBody MessageDTO messageDTO){
         teacherService.putMessage(messageDTO);
+    }
+
+    @PostMapping("/getSubmissions")
+    public List<Integer> getSubmissions(@RequestBody Input5 input5){
+        return fileRepo.findSubmissions(input5.getCourseid(), input5.getAssid());
     }
 
 

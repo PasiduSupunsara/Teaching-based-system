@@ -13,14 +13,14 @@ import com.example.Teaching_based_system.Service.StudentService;
 import com.example.Teaching_based_system.Service.TeacherService;
 import com.example.Teaching_based_system.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -50,6 +50,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginDTO loginDTO){
         return userService.login(loginDTO);
+    }
+    @PostMapping("/userlogout")
+    public ResponseEntity logout(@RequestBody LogoutDTO logoutDTO){
+        System.out.println("hi");
+        System.out.println(logoutDTO);
+        return userService.logout(logoutDTO);
     }
 
     @GetMapping("/getCoursenameByUserId")
@@ -98,6 +104,10 @@ public class AuthController {
     public void update(@RequestBody StatusUpdateDTO statusUpdateDTO){
         userService.updateMessageStatus(statusUpdateDTO);
     }
+    @GetMapping("/hi")
+    public String hi(){
+        return "hi";
+    }
 
     @PostMapping("/getstatus")
     public int update(@RequestBody InputId inputId){
@@ -109,9 +119,7 @@ public class AuthController {
     }
     @PostMapping("/upload")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file,@RequestParam("assid") int assid, @RequestParam("sid") int sid,@RequestParam("cid") int cid) {
-        System.out.println(file);
         try {
-            // Create a new file entity
             File file1 = new File();
             file1.setFilename(file.getOriginalFilename());
             file1.setContentType(file.getContentType());
@@ -119,17 +127,26 @@ public class AuthController {
             file1.setAssid(assid);
             file1.setSid(sid);
             file1.setCid(cid);
-
-
-            // Save the file entity to the database
             file1 = fileRepo.save(file1);
-
-            // Return a success response
             return ResponseEntity.ok("File uploaded successfully with ID " + file1.getId());
         } catch (IOException e) {
-            // Handle file save error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("File upload failed: " + e.getMessage());
         }
     }
+    @PostMapping("/pdf")
+    public ResponseEntity<byte[]> downloadPDF(@RequestBody Input4 input4) {
+        Optional<File> optionalFile = fileRepo.findByCourseid(input4.getCourseid(), input4.getAssid(),input4.getSid());
+        if (!optionalFile.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        File file = optionalFile.get();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.builder("attachment").filename(file.getFilename()).build());
+        return new ResponseEntity<>(file.getData(), headers, HttpStatus.OK);
+    }
+
+
+
 
 }
