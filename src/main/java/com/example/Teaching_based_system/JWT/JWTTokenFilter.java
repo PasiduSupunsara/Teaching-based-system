@@ -1,6 +1,7 @@
 package com.example.Teaching_based_system.JWT;
 
 
+import com.example.Teaching_based_system.Repository.TokenRepo;
 import com.example.Teaching_based_system.Service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -35,6 +36,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class JWTTokenFilter extends OncePerRequestFilter {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
+
+
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -55,7 +58,7 @@ public class JWTTokenFilter extends OncePerRequestFilter {
 
             if (name != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(name);
-                if (!jwtTokenUtil.isTokenValid(jwtToken, userDetails)) {
+                if (jwtTokenUtil.isTokenValid(jwtToken, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails,
                             null,

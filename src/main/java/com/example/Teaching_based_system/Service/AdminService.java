@@ -4,6 +4,7 @@ import com.example.Teaching_based_system.Entity.Course;
 import com.example.Teaching_based_system.Entity.Message;
 import com.example.Teaching_based_system.Entity.User;
 import com.example.Teaching_based_system.Exception.CourseExistenceException;
+import com.example.Teaching_based_system.Exception.StartDateException;
 import com.example.Teaching_based_system.Repository.CourseRepo;
 import com.example.Teaching_based_system.Repository.Messagerepo;
 import com.example.Teaching_based_system.Repository.UserRepo;
@@ -15,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +33,18 @@ public class AdminService {
     public Course saveCourse(Course course){
         if( courseRepo.existsById(course.getCourseid())){
             throw new CourseExistenceException();
-        }
-        else{
+        } else if (!isValidStartDate(course.getStartdate())) {
+            throw new StartDateException();
+        } else{
             return courseRepo.save(course);
+        }
+    }
+    public boolean isValidStartDate(LocalDate date){
+        if (date.isAfter(LocalDate.now().plusWeeks(1))){
+            return true;
+        }
+        else {
+            return false;
         }
     }
     public List<Course> getAllcourses(){

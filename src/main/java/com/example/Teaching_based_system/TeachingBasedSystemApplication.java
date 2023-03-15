@@ -25,7 +25,10 @@ public class TeachingBasedSystemApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		User user = new User(0,"ADMIN","$2a$10$ZFn5r4kCBcTaAlXuJgTC2.SgRfSqgAh35D6Rq9SX9Wqx1u3LTztiy","Admin","System","ADMIN","Admin@gmail.com","ADMIN","0763456987","200020002000","2022-02-02");
-		if(!userRepo.existsById(userRepo.findByName(user.getName()).getId())){
+		if ((userRepo.findByName(user.getName()))==null){
+			userRepo.save(user);
+		}
+		else if(!userRepo.existsById((userRepo.findByName(user.getName())).getId()) ){
 			userRepo.save(user);
 		}
 	}

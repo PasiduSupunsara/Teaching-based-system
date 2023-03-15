@@ -10,5 +10,5 @@ import lombok.ToString;
 @ToString
 @Data
 public class LogoutDTO {
-    private String user;
+    private String name;
 }

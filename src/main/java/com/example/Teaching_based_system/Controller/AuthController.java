@@ -53,8 +53,6 @@ public class AuthController {
     }
     @PostMapping("/userlogout")
     public ResponseEntity logout(@RequestBody LogoutDTO logoutDTO){
-        System.out.println("hi");
-        System.out.println(logoutDTO);
         return userService.logout(logoutDTO);
     }
 

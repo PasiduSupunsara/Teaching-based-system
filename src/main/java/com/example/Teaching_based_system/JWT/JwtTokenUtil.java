@@ -1,9 +1,13 @@
 package com.example.Teaching_based_system.JWT;
 
+import com.example.Teaching_based_system.Entity.Token;
+import com.example.Teaching_based_system.Repository.TokenRepo;
 import io.jsonwebtoken.*;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +18,8 @@ import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil {
+    @Autowired
+    private TokenRepo tokenRepo;
     private final String secret = "efkmkfafkesafef5af16a5f45af421256146845948511561265225";
 
     public String extractUsername(String token) {
@@ -55,7 +61,11 @@ public class JwtTokenUtil {
 
     public Boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        String[] details = username.split(",");
+        String name = details[0];
+        Token token1 = tokenRepo.findById(name).orElse(null);
+        boolean isTokensmatch = (token1!=null)&&(token1.getToken()).equals(token);
+        return (name.equals(userDetails.getUsername()) && !isTokenExpired(token) && isTokensmatch);
     }
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);
 

@@ -2,6 +2,7 @@ package com.example.Teaching_based_system.Service;
 
 import com.example.Teaching_based_system.Entity.Assesment;
 import com.example.Teaching_based_system.Entity.Message;
+import com.example.Teaching_based_system.Entity.Token;
 import com.example.Teaching_based_system.Exception.*;
 import com.example.Teaching_based_system.Repository.*;
 import com.example.Teaching_based_system.RequestDTO.*;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -53,7 +55,8 @@ public class UserService {
     private TeacherCourseRepo teacherCourseRepo;
     @Autowired
     private Messagerepo messagerepo;
-
+    @Autowired
+    private TokenRepo tokenRepo;
 
 
     public RegisterDTO getDetail(String name){
@@ -69,6 +72,10 @@ public class UserService {
                 UserPrincipal user = (UserPrincipal) authentication.getPrincipal();
                 String token = jwtTokenUtil.generateToken(loginDTO.getName(),getDetail(loginDTO.getName()).getRole());
                 String refreshToken = jwtTokenUtil.generateRefreshToken(loginDTO.getName(),getDetail(loginDTO.getName()).getRole());
+                Token token1 = new Token();
+                token1.setToken(token);
+                token1.setName(loginDTO.getName());
+                tokenRepo.save(modelMapper.map(token1, Token.class));
                 ResponseDTO responseDTO = new ResponseDTO(token,refreshToken,null,null,getDetail(loginDTO.getName()).getRole(),getDetail(loginDTO.getName()).getId());
                 return ResponseEntity.ok(responseDTO);
             }
@@ -137,12 +144,25 @@ public class UserService {
         }
         return true;
     }
+    public static boolean isValidBirthday(String dateString){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(dateString, formatter);
+        LocalDate today = LocalDate.now();
+        boolean state = false;
+        if(date.isBefore(today.minusYears(10)) && !date.isBefore(today.minusYears(100))){
+            state = true;
+        }
+        return state;
+    }
     public ResponseEntity<?> saveUser(RegisterDTO registerDTO){
         if(!isValidPassword(registerDTO.getPassword())){
             throw new PasswordInvalidException();
         }
         else if(!isValidPhoneNumber(registerDTO.getPhoneNumber())){
             throw new PhoneInvalidException();
+        }
+        else if (!isValidBirthday(registerDTO.getDateOfBirth())){
+            throw new BirthdayException();
         }
         else if (!isValidId(registerDTO.getIdNumber())){
             throw new IdInvalidException();
@@ -301,7 +321,7 @@ public class UserService {
     }
 
     public ResponseEntity logout(LogoutDTO logoutDTO) {
-
+        tokenRepo.deleteById(logoutDTO.getName());
         return ResponseEntity.ok(null);
     }
 }
